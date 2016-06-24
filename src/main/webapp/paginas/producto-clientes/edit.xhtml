@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditProductoClientes" prependId="false">   
+            <p:focus context="formEditProductoClientes"/>
+            <div class="ui-fluid">
+                <p:tabView id="tabSeleccion" activeIndex="#{productoClienteController.productoClienteBean.indiceTabView}" dynamic="true" cache="false">
+
+                    <p:tab id="tabClientes" title="Clientes">
+                        <p:dataTable id="tblClientes" widgetVar="wtblClientes" var="cliente"  value="#{productoClienteController.productoClienteBean.listClientes}"
+                                     rows="3" reflow="true" rowKey="#{cliente.id}" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     selectionMode="single" selection="#{productoClienteController.productoClienteBean.clienteSelected}"
+                                     emptyMessage="No se encontró registros">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: " />
+                                    <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblClientes').filter()"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column headerText="Ruc" sortBy="#{cliente.ruc}" filterBy="#{cliente.ruc}" 
+                                      filterMatchMode="contains" width="110">
+                                <h:outputText value="#{cliente.ruc}" />
+                            </p:column>
+
+                            <p:column headerText="Cliente" sortBy="#{cliente.cliente}" filterBy="#{cliente.cliente}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.cliente}" />
+                            </p:column>
+
+<!--                            <p:column headerText="E-mail" sortBy="#{cliente.email}" filterBy="#{cliente.email}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.email}" />
+                            </p:column>-->
+
+                            <p:column  width="50" >
+                                <p:commandButton id="idSeleccionarCliente" process="@this"                                             
+                                                 actionListener="#{productoClienteController.seleccionarCliente(cliente)}"
+                                                 icon="ui-icon-circle-check" title="Editar" />
+                                <p:tooltip for="idSeleccionarCliente" value="Seleccionar"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab id="tabProductos" title="Productos">
+                        <p:dataTable id="tblProductos" widgetVar="wtblProductos" var="producto"  value="#{productoClienteController.productoClienteBean.listProductos}"
+                                     rows="3" reflow="true" rowKey="#{producto.id}" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     selectionMode="single" selection="#{productoClienteController.productoClienteBean.productoSelected}"
+                                     emptyMessage="No se encontró registros">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: " />
+                                    <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblProductos').filter()"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column headerText="Categoria" sortBy="#{producto.idCategoria.nombre}" filterBy="#{producto.idCategoria.nombre}" filterMatchMode="contains">
+                                <h:outputText value="#{producto.idCategoria.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Marca" sortBy="#{producto.idModelo.idMarca.marca}" filterBy="#{producto.idModelo.idMarca.marca}" filterMatchMode="contains">
+                                <h:outputText value="#{producto.idModelo.idMarca.marca}" />
+                            </p:column>
+
+                            <p:column headerText="Modelo" sortBy="#{producto.idModelo.modelo}" filterBy="#{producto.idModelo.modelo}" filterMatchMode="contains">
+                                <h:outputText value="#{producto.idModelo.modelo}" />
+                            </p:column>
+
+                            <p:column  width="50" >
+                                <p:commandButton id="idSeleccionarProducto" process="@this"
+                                                 actionListener="#{productoClienteController.seleccionarProducto(producto)}"
+                                                 icon="ui-icon-circle-check" title="Editar" />
+                                <p:tooltip for="idSeleccionarProducto" value="Seleccionar"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <p:outputPanel id="opSeleccion">
+
+                <div class="ui-fluid">
+                    <p:panel header="Datos Seleccionados">
+                        <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-10,ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:outputLabel for="rucClienteSeleccionado" value="Ruc:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="rucClienteSeleccionado" 
+
+                                           value="#{productoClienteController.productoClienteBean.clienteSelected.ruc}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="clienteSeleccionado" value="Cliente:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="clienteSeleccionado"
+
+                                           value="#{productoClienteController.productoClienteBean.clienteSelected.cliente}" style="font-size: 12px !important;"/>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-10,ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="marcaProductoSeleccionado" value="Marca:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="marcaProductoSeleccionado" 
+
+                                           value="#{productoClienteController.productoClienteBean.productoSelected.idModelo.idMarca.marca}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="modeloProductoSeleccionado" value="Modelo:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="modeloProductoSeleccionado" 
+
+                                           value="#{productoClienteController.productoClienteBean.productoSelected.idModelo.modelo}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="equipoSeleccionado" value="Equipo:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="equipoSeleccionado" 
+
+                                           value="#{productoClienteController.productoClienteBean.productoSelected.equipo}" style="font-size: 12px !important;"/>
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+
+                        </p:panelGrid>     
+
+                    </p:panel>
+                    <br/>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                        <p:outputLabel for="serieEquipoSeleccionado" value="Serie:" style="font-weight: bold; font-size: 12px !important;"/>
+                        <p:inputText id="serieEquipoSeleccionado" required="true"
+                                     autocomplete="off"
+                                     requiredMessage="La serie es campo obligatorio"                                     
+                                     value="#{productoClienteController.productoClienteBean.productoCliente.serie}" style="font-size: 12px !important;"/>
+
+                        <p:outputLabel for="estadoModelo" value="Estado:" style="font-weight: bold; font-size: 12px !important;"/>
+                        <p:selectOneRadio id="estadoModelo" value="#{productoClienteController.productoClienteBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                            <f:selectItems value="#{productoClienteController.productoClienteBean.listEstados}" var="estado" 
+                                           itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                        </p:selectOneRadio>
+                    </p:panelGrid>
+                </div>
+
+                <p:separator/>
+                <div align="center">
+                    <p:commandButton update="tblProductoClientes, @form" value="Guardar" 
+                                     disabled="#{productoClienteController.productoClienteBean.productoSelected.id eq null or productoClienteController.productoClienteBean.clienteSelected.id eq null}"
+                                     actionListener="#{productoClienteController.guardar()}" icon="ui-icon-check"/>
+                    <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{productoClienteController.cerrarDialog()}" immediate="true"/>
+                </div>
+
+            </p:outputPanel>
+        </h:form>   
+
+    </h:body>
+
+</html>

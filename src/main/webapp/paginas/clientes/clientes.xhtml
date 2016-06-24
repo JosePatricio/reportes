@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <div class="modal fade" id="dlgClientes" tabindex="-1" role="dialog"
+             aria-labelledby="dlgClientesLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgClientesLabel">
+                            Clientes
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>  
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                                                <p:commandButton update="tblModelos" value="Guardar" 
+                                                    actionListener="#{modeloController.guardar()}" icon="ui-icon-check"/>
+                                                <p:commandButton value="Cancelar" icon="ui-icon-closethick" 
+                                                    actionListener="#{modeloController.cerrarDialog()}" immediate="true"/>
+           
+                                            </div>-->
+                    <!--</h:form>-->
+                </div>
+
+            </div>
+        </div>
+
+        <!--        <p:dialog id="dialogClientes" appendTo="@(body)" closeOnEscape="true" 
+                          header="Clientes" widgetVar="dlgClientes" modal="true"  width="40%" >
+                    <ui:include src="edit.xhtml"/>      
+        
+                </p:dialog>   -->
+
+        <h:form id="formMarcas" prependId="false">
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Administración de Clientes</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" actionListener="#{clienteController.abrirDialogCliente(null)}"/>
+            <br/> 
+
+            <p:dataTable id="tblClientes" widgetVar="wtblClientes" var="cliente"  value="#{clienteController.clienteBean.listClientes}" 
+                         rows="10"  rowKey="#{cliente.id}" reflow="true" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{clienteController.clienteBean.clienteSelected}"
+                         emptyMessage="No se encontró registros">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar: " />
+                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblClientes').filter()"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="Ruc" sortBy="#{cliente.ruc}" filterBy="#{cliente.ruc}" 
+                          filterMatchMode="contains" width="100" >
+                    <h:outputText value="#{cliente.ruc}" />
+                </p:column>
+
+                <p:column headerText="Nombre" sortBy="#{cliente.cliente}" filterBy="#{cliente.cliente}" filterMatchMode="contains">
+                    <h:outputText value="#{cliente.cliente}" />
+                </p:column>
+
+                <p:column headerText="Teléfono" sortBy="#{cliente.telefono}" filterBy="#{cliente.telefono}" filterMatchMode="contains">
+                    <h:outputText value="#{cliente.telefono}" />
+                </p:column>
+
+                <p:column headerText="Dirección" sortBy="#{cliente.direccion}" filterBy="#{cliente.direccion}" filterMatchMode="contains">
+                    <h:outputText value="#{cliente.direccion}" />
+                </p:column>
+
+                <p:column headerText="E-mail" sortBy="#{cliente.email}" filterBy="#{cliente.email}" filterMatchMode="contains">
+                    <h:outputText styleClass="lower-text" value="#{cliente.email}" />
+                </p:column>
+
+                <p:column width="80" headerText="Prioridad" sortBy="#{cliente.prioridad}" >
+                    <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(cliente.prioridad)}">#{sesionController.getNamePrioridad(cliente.prioridad)}</span>
+                </p:column>
+
+                <p:column headerText="Estado" sortBy="#{sesionController.getStatus(cliente.estado)}" width="100">
+                    <h:outputText value="#{sesionController.getStatus(cliente.estado)}" />
+                </p:column>
+
+                <p:column width="60">
+                    <div class="ui-fluid">
+                        <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar" action="#{clienteController.abrirDialogCliente(cliente)}"/>
+                        <p:tooltip for="idEditar" value="Editar"/>
+                    </div>
+                </p:column>
+
+            </p:dataTable>
+
+
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+    
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <div class="modal fade" id="dlgClientes" tabindex="-1" role="dialog"
+             aria-labelledby="dlgClientesLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgClientesLabel">
+                            Clientes
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <!--<ui:include src="edit.xhtml"/>-->  
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                                                <p:commandButton update="tblModelos" value="Guardar" 
+                                                    actionListener="#{modeloController.guardar()}" icon="ui-icon-check"/>
+                                                <p:commandButton value="Cancelar" icon="ui-icon-closethick" 
+                                                    actionListener="#{modeloController.cerrarDialog()}" immediate="true"/>
+           
+                                            </div>-->
+                    <!--</h:form>-->
+                </div>
+
+            </div>
+        </div>
+
+        <!--        <p:dialog id="dialogClientes" appendTo="@(body)" closeOnEscape="true" 
+                          header="Clientes" widgetVar="dlgClientes" modal="true"  width="40%" >
+                    <ui:include src="edit.xhtml"/>      
+        
+                </p:dialog>   -->
+
+        <h:form id="formMarcas" prependId="false">
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Configuración de la Empresa</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+
+            <div class="ui-fluid">
+                <p:tabView>
+                    <p:tab title="Info. Empresa">
+
+                        <br/>
+                        <br/>
+
+                        <div class="container container-fluid">
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-newspaper-o" style="font-weight: bold" value=" Ruc: "/>                                                                            
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText id="txtRuc" value="#{configuracionController.configuracionBean.configuracion.ruc}" maxlength="13"
+                                                 required="true" requiredMessage="El campo Ruc es obligatorio"/>
+
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-suitcase" style="font-weight: bold" value=" Nombre: "/>
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.nombreEmpresa}" maxlength="150"
+                                                 required="true" requiredMessage="El campo Nombre es obligatorio"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-phone" style="font-weight: bold" value=" Teléfono1: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.telefono1}" maxlength="20"
+                                                 required="true" requiredMessage="El campo Teléfono1 es obligatorio"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-phone" style="font-weight: bold" value=" Teléfono2: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.telefono2}" maxlength="20"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-phone" style="font-weight: bold" value=" Teléfono3: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.telefono3}" maxlength="20"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-phone" style="font-weight: bold" value=" Teléfono4: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.telefono4}" maxlength="20"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="glyphicon glyphicon-road" style="font-weight: bold" value=" Dirección: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.direccion}" maxlength="150"
+                                                 required="true" requiredMessage="El campo Dirección es obligatorio"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-envelope"  style="font-weight: bold" value=" Email: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText id="txtMail" style="text-transform: lowercase !important" value="#{configuracionController.configuracionBean.configuracion.email}" maxlength="150"
+                                                 required="true" requiredMessage="El campo Email es obligatorio" validatorMessage="El email de la empresa es inválido">
+
+                                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                    </p:inputText>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa fa-building-o" style="font-weight: bold" value=" Ciudad: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.ciudad}" maxlength="50"
+                                                 required="true" requiredMessage="El campo Ciudad es obligatorio"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-flag" style="font-weight: bold" value=" País: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.pais}" maxlength="50"
+                                                 required="true" requiredMessage="El campo País es obligatorio"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-globe" style="font-weight: bold" value=" Url: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText style="text-transform: lowercase !important" value="#{configuracionController.configuracionBean.configuracion.url}" maxlength="50"/>
+                                </div>
+                            </div>     
+
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-photo" style="font-weight: bold" value=" Logo: " />
+                                </div>
+
+                                <div class="col-xs-10">
+                                    <p:fileUpload id="idFile" auto="true"
+                                                  fileUploadListener="#{configuracionController.handleFileUpload}"
+                                                  mode="advanced" dragDropSupport="true" multiple="true"
+                                                  uploadLabel="Subir"
+                                                  cancelLabel="Cancelar"
+                                                  label="Examinar" 
+                                                  sizeLimit="10000000"
+                                                  invalidFileMessage="Tipo inválido"
+                                                  invalidSizeMessage="Tamaño inválido"
+                                                  fileLimitMessage="Límite de archivos inválido"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/i"/>
+                                </div>
+
+                            </div>     
+
+                        </div>  
+                        <p:watermark for="txtMail" value="example@mail.com" />
+                        <p:message for="txtMail"/>
+
+                    </p:tab>
+
+                    <p:tab title="Info. Representante">
+                        <div class="container container-fluid">
+
+                            <br/>
+                            <br/>
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-newspaper-o" style="font-weight: bold" value=" Cédula: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.cedulaRepresentante}" maxlength="10"
+                                                 required="true" requiredMessage="El campo Cédula es obligatorio"/>
+                                </div>
+                            </div> 
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-user" style="font-weight: bold" value=" Nombre: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.nombreRepresentante}"
+                                                 required="true" requiredMessage="El campo Nombre es obligatorio"/>
+                                </div>
+                            </div> 
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-envelope" style="font-weight: bold" value=" Email: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText id="txtMailRepresentante" style="text-transform: lowercase !important" value="#{configuracionController.configuracionBean.configuracion.emailRepresentante}"
+                                                 required="true" requiredMessage="El campo Email es obligatorio" validatorMessage="El email del representante es inválido">
+                                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                    </p:inputText>
+                                </div>
+                            </div> 
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-phone" style="font-weight: bold" value=" Teléfono: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.telefonoRepresentante}" maxlength="20"/>
+                                </div>
+                            </div> 
+
+                            <div class="row" style="padding-bottom: 8px !important">
+                                <div class="col-xs-2">
+                                    <h:outputText class="fa fa-mobile-phone" style="font-weight: bold" value=" Celular: " />
+                                </div>
+                                <div class="col-xs-10">
+                                    <p:inputText value="#{configuracionController.configuracionBean.configuracion.celularRepresentante}" maxlength="20"
+                                                 required="true" requiredMessage="El campo Celular es obligatorio"/>
+                                </div>
+                            </div> 
+                        </div> 
+                        <p:watermark for="txtMailRepresentante" value="example@mail.com" />
+                        <p:message for="txtMailRepresentante"/>
+                    </p:tab>
+
+                </p:tabView>
+            </div>
+
+            <br/>
+            <div style="text-align: center">
+                <p:commandButton actionListener="#{configuracionController.guardar()}" icon="fa fa-fw fa-save" value="Guardar"/>
+            </div>                
+
+
+
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

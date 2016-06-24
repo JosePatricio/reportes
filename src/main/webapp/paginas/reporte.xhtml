@@ -1,0 +1,1209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+        <title>Form</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <h:outputStylesheet library="css" name="css.css"  />
+        <h:outputStylesheet library="css" name="cssEmptyFields.css"/>
+
+        <h:outputScript name="calendar_es.js" library="js" />
+        <h:outputScript name="js.js" library="js" />
+
+
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
+
+        <script type="text/javascript">
+
+            function contador1() {
+                calcularContadorImpresionReal('contadorTotalAnterior', 'contadorTotalActual', 'idImpresionRealTotal');
+
+            }
+            function contador2() {
+                calcularContadorImpresionReal('contadorColorAnterior', 'contadorColorActual', 'idImpresionRealColor');
+
+            }
+            function contador3() {
+                calcularContadorImpresionReal('contadorBnAnterior', 'contadorBnActual', 'idImpresionRealBN');
+            }
+
+
+
+
+
+        </script>
+
+    </h:head>
+    <h:body>
+
+
+        <div class="modal fade" id="dlgFiltros" tabindex="-1" role="dialog"
+             aria-labelledby="dlgFiltrosLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgFiltrosLabel">
+                            Filtros
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formEditssss" prependId="false">
+                            <p:growl autoUpdate="true"/>
+                            <p:outputPanel id="group">
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                        <p:outputLabel for="idFiltroSerial" value="Serial:"/>
+                                        <p:inputText id="idFiltroSerial" placeholder="Serial" value="#{reporteController.reporteBean.filtroSerial}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                        <p:outputLabel for="idFiltroCedula" value="Cédula:"/>
+                                        <p:inputText id="idFiltroCedula" type="number" styleClass="form-control" placeholder="Cédula" value="#{reporteController.reporteBean.filtroCedula}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                        <p:outputLabel for="idFiltroProducto" value="Producto:"/>
+                                        <p:inputText id="idFiltroProducto" styleClass="form-control" placeholder="Producto" value="#{reporteController.reporteBean.filtroProducto}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                    </p:panelGrid>
+                                </div> 
+                                <p:separator/>
+                                <div align="center">
+                                    <p:commandButton styleClass="btn btn-default" update="form" value="Buscar" process="@this" actionListener="#{reporteController.llenarCamposPorFiltro}"/>
+
+                                    <p:commandButton styleClass="btn btn-default" value="Cerrar" onclick="$('#dlgFiltros').modal('hide');"/>
+
+                                </div>
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="dlgClientes" tabindex="-1" role="dialog"
+             aria-labelledby="dlgClientesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgClientesLabel">
+                            Clientes
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formClientes" prependId="false">
+                            <p:outputPanel >
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-12" layout="grid" >
+
+
+                                        <p:dataTable id="dtClientes" widgetVar="clienteswv" var="var"  value="#{reporteController.reporteBean.listCliente}"
+                                                     rows="5" reflow="true" rowKey="#{var.id}" paginator="true" paginatorPosition="bottom" 
+                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                     selectionMode="single" selection="#{reporteController.reporteBean.clienteSelected}"
+                                                     emptyMessage="No se encontró registros">
+
+
+                                            <p:ajax event="rowDblselect" listener="#{reporteController.rowDblselectClientes}" update="idCliente,idClienteTelefono,idClienteDireccion,idruc,idUsuarioMail" />
+                                            <f:facet name="header">
+                                                <p:outputPanel>
+                                                    <h:outputText value="Buscar :" />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('clienteswv').filter()" style="width:150px" placeholder="Ingresar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+
+                                            <p:column headerText="RUC" sortBy="#{var.ruc}" filterBy="#{var.ruc}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.ruc}" />
+                                            </p:column>
+
+                                            <p:column headerText="Cliente" sortBy="#{var.cliente}" filterBy="#{var.cliente}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.cliente}" />
+                                            </p:column>
+
+                                            <p:column headerText="Correo" sortBy="#{var.email}" filterBy="#{var.email}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.email}" />
+                                            </p:column>
+
+                                            <p:column headerText="Telefono" sortBy="#{var.telefono}" filterBy="#{var.telefono}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.telefono}" />
+                                            </p:column>
+
+                                            <p:column headerText="Dirección" sortBy="#{var.direccion}" filterBy="#{var.direccion}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.direccion}" />
+                                            </p:column>
+
+                                            <p:column headerText="Prioridad" sortBy="#{var.prioridad}" >
+                                                <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(var.prioridad)}">
+                                                    #{sesionController.getNamePrioridad(var.prioridad)}</span>
+                                            </p:column>
+
+                                            <p:column  width="50">
+                                                <p:commandButton id="idbtnver"  icon="ui-icon-search" title="View" update="idCliente,idClienteTelefono,idClienteDireccion,idruc,idUsuarioMail" process="@this" 
+                                                                 actionListener="#{reporteController.seleccionarDialogCliente(var)}" />
+
+                                                <p:tooltip for="idbtnver" value="Seleccionar"/>
+
+                                            </p:column>
+
+                                        </p:dataTable>
+
+
+                                    </p:panelGrid>
+                                </div> 
+
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="dlgProductos" tabindex="-1" role="dialog"
+             aria-labelledby="dlgProductosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgProductosLabel">
+                            Productos
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formProductos" prependId="false">
+                            <p:outputPanel >
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-12" layout="grid" >
+                                        <p:dataTable id="dtProductos" widgetVar="productoswv" value="#{reporteController.reporteBean.listProducto}" var="var" reflow="true"
+                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                     rowsPerPageTemplate="5,10,15" rows="10" paginator="true" rowKey="#{var.id}" selectionMode="single" selection="#{reporteController.reporteBean.productoSelected}"
+                                                     >
+                                            <p:ajax event="rowDblselect" listener="#{reporteController.rowDblselectProducto}"  />
+
+                                            <f:facet name="header">
+                                                <p:outputPanel>
+                                                    <h:outputText value="Buscar :" />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('productoswv').filter()" style="width:150px" placeholder="Ingresar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column filterBy="#{var.idModelo.idMarca.marca}" headerText="Marca"  filterMatchMode="contains">
+                                                <h:outputText value="#{var.idModelo.idMarca.marca}" />
+                                            </p:column>
+
+
+                                            <p:column filterBy="#{var.idModelo.modelo}" headerText="Modelo" filterMatchMode="contains">
+                                                <h:outputText value="#{var.idModelo.modelo}" />
+                                            </p:column>
+
+
+                                            <p:column headerText="Equipo" sortBy="#{var.equipo}" filterBy="#{var.equipo}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.equipo}" />
+                                            </p:column>
+
+                                            <p:column headerText="Descripción" sortBy="#{var.descripcion}" filterBy="#{var.descripcion}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.descripcion}" />
+                                            </p:column>
+
+                                            <p:column headerText="Firmware" sortBy="#{var.versionFirmware}" filterBy="#{var.versionFirmware}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.versionFirmware}" />
+                                            </p:column>
+
+                                            <p:column headerText="" sortBy="#{var.campo1}" filterBy="#{var.campo1}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.campo1}" />
+                                            </p:column>
+
+                                            <p:column headerText="" sortBy="#{var.campo2}" filterBy="#{var.campo2}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.campo2}" />
+                                            </p:column>
+
+                                            <p:column  width="50">
+                                                <p:commandButton id="idbtnverProducto" update="idEquipo,idMarca,idModelo,idFirmware,idCampo1,idCampo2"  icon="ui-icon-search" title="View" process="@this" immediate="true"
+                                                                 actionListener="#{reporteController.seleccionarDialogProducto(var)}" />
+
+                                                <p:tooltip for="idbtnverProducto" value="Seleccionar"/>
+
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                    </p:panelGrid>
+                                </div> 
+
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="dlgRepuestosOtros" tabindex="-1" role="dialog"
+             aria-labelledby="dlgRepuestosOtrosLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgRepuestosOtrosLabel">
+                            Otros Repuestos
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formRepuestosOtros" prependId="false">
+                            <p:outputPanel >
+
+                                <p:dataTable id="tblRepuestosOtros" widgetVar="wtblRepuestos" var="repuesto"  value="#{reporteController.detalleCatalogoReporteBean.listDetalleCatalogoReporte}" 
+                                             rows="10" reflow="true" rowKey="#{repuesto.id}" paginator="true" paginatorPosition="bottom"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{reporteController.detalleCatalogoReporteBean.detalleCatalogoReporteSelected}"
+                                             emptyMessage="No se encontró registros">
+                                    <p:ajax event="rowDblselect" listener="#{reporteController.rowDblselectOtroRepuesto}" update="accordionmantenimiento:idDatatableOtros" />
+
+
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar: " />
+                                            <p:inputText id="globalFilter" style="width:150px" onkeyup="PF('wtblRepuestos').filter()" placeholder="Ingresar..."/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+                                    <p:column headerText="Nombre" sortBy="#{repuesto.descripcion}" filterBy="#{repuesto.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.descripcion}" />
+                                    </p:column>
+
+
+                                    <p:column width="130" headerText="C   -   S">
+                                        <p:selectOneRadio id="idRadioTipoOtrosNuevos" value="#{repuesto.tipoRepuesto}">
+                                            <f:selectItem itemLabel="" itemValue="C" />
+                                            <f:selectItem itemLabel="" itemValue="S" />
+                                            <p:ajax />
+                                        </p:selectOneRadio>
+                                    </p:column>
+
+
+
+                                </p:dataTable>
+
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal fade" id="dlgCorrectivosSuministros" tabindex="-1" role="dialog"
+             aria-labelledby="dlgCorrectivosSuministrosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <h:form id="formCorrectivosSuministros" prependId="false">
+                        <div class="modal-header" >
+                            <button type="button" class="close" data-dismiss="modal" 
+                                    aria-label="Close">
+                                <span aria-hidden="true" >x</span>
+                            </button>
+                            <h4 class="modal-title" id="dlgCorrectivosSuministrosLabel">
+                                Historial de #{reporteController.detalleCatalogoReporteBean.modalLabel}
+                            </h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <p:outputPanel >
+
+                                <p:dataTable id="tblHistorialCSuministros" widgetVar="wvHistorialCSuministros" var="repuesto"  value="#{reporteController.reporteBean.listRepuestosHistorial}" 
+                                             rows="10" reflow="true" rowKey="#{repuesto.id}" paginator="true" paginatorPosition="bottom"
+                                             rowStyleClass="#{repuesto.stock == 0 ? 'filaSinStock':null}"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{reporteController.reporteBean.repuestoHistorialSelected}"
+                                             emptyMessage="No se encontró registros">
+                                    <p:ajax event="rowDblselect" listener="#{reporteController.rowDblSelectRepuesto}"  />
+
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar: " />
+                                            <p:inputText id="globalFilter" style="width:150px" onkeyup="PF('wvHistorialCSuministros').filter()" placeholder="Ingresar..."/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+
+                                    <p:column width="10" headerText="id" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.id}" />
+                                    </p:column>
+
+
+                                    <p:column width="75" headerText="Nombre" sortBy="#{repuesto.descripcion}" filterBy="#{repuesto.idDetalleCatalogoReporte.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.idDetalleCatalogoReporte.descripcion}" />
+                                    </p:column>
+
+                                    <p:column width="55" headerText="Grupo" sortBy="#{repuesto.idDetalleCatalogoReporte.idCabecera.descripcion}" filterBy="#{repuesto.idDetalleCatalogoReporte.idCabecera.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.idDetalleCatalogoReporte.idCabecera.descripcion}" />
+                                    </p:column>
+
+
+                                    <p:column width="50" headerText="Código" sortBy="#{repuesto.codigoRepuesto}" filterBy="#{repuesto.codigoRepuesto}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.codigoRepuesto}" />
+                                    </p:column>
+
+                                    <p:column width="50" headerText="Modelo" sortBy="#{repuesto.idModelo.modelo}" filterBy="#{repuesto.idModelo.modelo}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.idModelo.modelo}" />
+                                    </p:column>
+
+                                    <p:column width="35" headerText="Stock" sortBy="#{repuesto.stock}" filterBy="#{repuesto.stock}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.stock}" />
+                                    </p:column>
+
+                                    <p:column width="60" headerText="Descripción" sortBy="#{repuesto.descripcion}" filterBy="#{repuesto.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.descripcion}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+
+                            </p:outputPanel>
+
+                        </div>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <h:form id="form" prependId="false">
+
+            <p:growl id="mensaje" autoUpdate="true" showSummary="false" showDetail="true" />
+            
+
+            <p:panelGrid id="idPanelGridFormulario" columns="4" styleClass="ui-panelgrid-blank" style="width: 100%">
+                <p:focus context="idPanelGridFormulario" />
+
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                    <img src="../resources/images/InnovacionesLogo.png" alt=""/>
+                </p:panelGrid>
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                    <div align="center">
+
+                        <h3>QUITO - GUAYAQUIL - CUENCA</h3><br/>
+                        e-mail: soporte.quito@innovaciones.ec<br/><br/>
+                        Av. Atahualpa Oe 3-109 y Pje. Orbigny &#8226; E-MAIL: soporte.quito@innovaciones.ec &#8226; Quito - ECUADOR
+                    </div>
+                </p:panelGrid>
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+
+                    <h1>REPORTE TECNICO</h1>
+                    <h1>N° 
+                        #{reporteController.reporteBean.reporteActual}
+                    </h1>
+                </p:panelGrid>
+            </p:panelGrid>
+
+
+
+
+
+            <p:panelGrid style="width: 100%">
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="4">CÓDIGO 
+                        #{reporteController.reporteBean.usuarios.codigo}
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="4">Fecha: 
+                        <p:outputLabel value="#{reporteController.reporteBean.reporte.fecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="date" />
+                        </p:outputLabel>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8"><div align="center">DATOS GENERALES</div></p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Empresa/Cliente:  </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="idCliente" required="true" requiredMessage="Campo Empresa/Cliente Requerido" style="width: 100%;" value="#{reporteBean.cliente.cliente}"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:commandButton update=":formClientes:dtClientes" process="@this" icon="fa fa-search" style="height: 20px" actionListener="#{reporteController.abrirDialogClientes}"/>
+
+                    </p:column>
+
+
+
+                    <p:column style="font-weight: bold;" colspan="1">No. RUC:</p:column>
+                    <p:column colspan="2"> 
+                        <p:panelGrid columns="2">
+                            <p:inputText id="idruc" required="true" requiredMessage="Campo Ruc Requerido" type="number" style="width: 90%" maxlength="20" validatorMessage="Inválido" value="#{reporteBean.cliente.ruc}"><p:ajax/></p:inputText>
+                            <p:commandButton update="idCliente,idClienteTelefono,idClienteDireccion" icon="fa fa-search" process="@this" style="height: 20px" actionListener="#{reporteController.llenarClientePorRuc}"/>
+                        </p:panelGrid>
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Atención: </p:column>
+                    <p:column colspan="2"> 
+                        <p:inputText style="width: 90%" required="true" requiredMessage="Campo Atención Requerido" value="#{reporteBean.productoClienteReporte.atencion}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1">
+                        <div align="right">
+                            Teléfono:  
+                        </div>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idClienteTelefono"  value="#{reporteBean.cliente.telefono}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1">
+                        <div align="right">
+                            Teléfono 2:  
+                        </div>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idClienteTelefono2"  value="#{reporteBean.cliente.telefono2}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Direcci&ograve;n: </p:column>
+                    <p:column colspan="2"> 
+                        <p:inputText id="idClienteDireccion" required="true" requiredMessage="Campo Dirección Requerido"  style="width: 90%" value="#{reporteBean.cliente.direccion}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1"><div align="right">Factura #: </div></p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText  required="true" requiredMessage="Campo Factura# Requerido"  value="#{reporteBean.reporte.factura}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="1"><div align="right">Referencia:</div> </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText  value="#{reporteBean.reporte.referencia}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+
+                    <p:column style="font-weight: bold;" colspan="1" > Ciudad: </p:column>
+                    <p:column  colspan="3">
+                        <p:inputText style="width: 90%" value="#{reporteBean.productoClienteReporte.ciudad}"><p:ajax/></p:inputText>
+                    </p:column>
+
+
+                    <p:column style="font-weight: bold;" colspan="3" rowspan="2">
+                        <p:selectOneRadio  required="true" disabled="#{reporteController.reporteBean.reporte.tipo =='CONTADOR'}" requiredMessage="Seleccione tipo de visita" id="visita" value="#{reporteController.reporteBean.idTipoVisita}" layout="grid" columns="3" style="width: 100%">
+                            <f:selectItems value="#{reporteController.reporteBean.listTipoVisitas}" var="var" itemLabel="#{var.descripcion}" itemValue="#{var.id}" />
+                        </p:selectOneRadio>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Correo:  </p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="idUsuarioMail" required="true" requiredMessage="Campo Email Requerido"  value="#{reporteBean.cliente.email}" style="width: 90%;"  styleClass="textoNormal"><p:ajax/></p:inputText>
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">DATOS DEL EQUIPO / TIPO DE SERVICIOS</div></p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="EQUIPO"/><br/>
+                        <p:inputText id="idEquipo" required="true" requiredMessage="Campo Equipo Requerido" style="width: 70%" value="#{reporteController.reporteBean.producto.equipo}"><p:ajax/></p:inputText>
+
+                        <p:commandButton update=":formProductos:dtProductos" icon="fa fa-search" style="height: 20px" process="@this" actionListener="#{reporteController.abrirDialogProductos}"/>
+
+
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MARCA"/><br/>
+                        <p:inputText id="idMarca" style="width: 70%" required="true" requiredMessage="Campo Marca Requerido" value="#{reporteController.reporteBean.marca.marca}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MODELO"/><br/>
+                        <p:inputText id="idModelo" style="width: 70%" required="true" requiredMessage="Campo Modelo Requerido" value="#{reporteController.reporteBean.modelo.modelo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="SERIE"/><br/>
+                        <p:inputText style="width: 70%" required="true" requiredMessage="Campo serial requerido" value="#{reporteController.reporteBean.productoCliente.serie}"><p:ajax/></p:inputText>
+                        <p:commandButton update=":form" icon="fa fa-search" process="@this" style="height: 20px" actionListener="#{reporteController.llenarProductoPorSerial}"/>
+
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="# IP"/><br/>
+                        <p:inputText id="idIpMaquina" required="true" requiredMessage="Campo Ip Equipo Requerido"  style="width: 70%" value="#{reporteController.reporteBean.productoClienteReporte.ipEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="FIRMWARE"/><br/>
+                        <p:inputText id="idFirmware" style="width: 70%" value="#{reporteController.reporteBean.producto.versionFirmware}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 1"/><br/>
+                        <p:inputText id="idCampo1" style="width: 70%" value="#{reporteController.reporteBean.producto.campo1}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 2"/><br/>
+                        <p:inputText id="idCampo2" style="width: 70%" value="#{reporteController.reporteBean.producto.campo2}"><p:ajax/></p:inputText>
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="DEPARTAMENTO"/><br/>
+                        <p:inputText id="idDepartamentoEquipo" style="width: 70%" value="#{reporteController.reporteBean.productoClienteReporte.departamento}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="DIRECCIÓN"/><br/>
+                        <p:inputText id="idDireccionEquipo" style="width: 70%" value="#{reporteController.reporteBean.productoClienteReporte.direccionEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="TELEFONO"/><br/>
+                        <p:inputText id="idTelefonoEquipo" style="width: 70%" value="#{reporteController.reporteBean.productoClienteReporte.telefonoEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="CORREO"/><br/>
+                        <p:inputText id="idCorreoEquipo" style="width: 70%" value="#{reporteController.reporteBean.productoClienteReporte.correoEquipo}" styleClass="textoNormal"><p:ajax/></p:inputText>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1"></p:column>
+                    <p:column colspan="1">Contador Total </p:column>
+                    <p:column colspan="1">Contador Color </p:column>
+                    <p:column colspan="1">Contador B/N </p:column>
+                    <p:column colspan="1">Mantenimiento</p:column>
+                    <p:column colspan="1">Otros </p:column>
+                    <p:column colspan="2"> 
+                        <p:selectBooleanCheckbox value="#{reporteController.reporteBean.productoDetalleReporte.servicioFacturarEstado}"  >
+                            <p:ajax update="servicioFacturar"  />
+                        </p:selectBooleanCheckbox> 
+                        Servicio a FACTURAR</p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column colspan="1">Anterior</p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorTotalAnterior" onkeyup="contador1();" validatorMessage="Valor no válido" value="#{reporteController.reporteBean.productoDetalleReporte.contadorTotalAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorColorAnterior" onkeyup="contador2();" value="#{reporteController.reporteBean.productoDetalleReporte.contadorColorAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorBnAnterior" onkeyup="contador3();" value="#{reporteController.reporteBean.productoDetalleReporte.contadorBnAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+                    <p:column rowspan="3">
+                        <p:inputText style="height: 80px;font-size: 50px !important ;width: 150px !important" type="number" id="mantenimiento" value="#{reporteController.reporteBean.productoDetalleReporte.mantenimiento}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column rowspan="3"> 
+                        <p:inputText style="height: 80px;font-size: 50px !important ;width: 150px !important" type="number" id="otros" value="#{reporteController.reporteBean.productoDetalleReporte.otros}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column rowspan="3" colspan="2"> 
+
+
+                        <p:inputNumber id="servicioFacturar" style="height: 150px;font-size: 20px !important ;width: 100px !important"
+                                       disabled="#{!reporteController.reporteBean.productoDetalleReporte.servicioFacturarEstado}"
+                                       value="#{reporteController.reporteBean.productoDetalleReporte.servicioFacturar}" 
+                                       decimalSeparator="," thousandSeparator="." symbol="$">  
+                            <p:ajax />  
+                        </p:inputNumber> 
+
+
+
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">Actual</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorTotalActual"  type="number" value="#{reporteController.reporteBean.productoDetalleReporte.contadorTotalActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorColorActual" type="number" value="#{reporteController.reporteBean.productoDetalleReporte.contadorColorActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorBnActual" type="number"  value="#{reporteController.reporteBean.productoDetalleReporte.contadorBnActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column colspan="1">Impresi&ograve;n Real</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealTotal"   value="#{reporteController.reporteBean.productoDetalleReporte.contadorTotalImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealColor" value="#{reporteController.reporteBean.productoDetalleReporte.contadorColorImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1" > 
+                        <p:inputText id="idImpresionRealBN" value="#{reporteController.reporteBean.productoDetalleReporte.contadorBnImpReal}">
+                        </p:inputText>
+
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">SÍNTOMAS:</p:column>
+                    <p:column style="font-weight: bold;" colspan="7"><p:inputText style="width: 100%" value="#{reporteController.reporteBean.reporte.sintomasEquipo}"><p:ajax/></p:inputText></p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+
+                    <p:column colspan="8">
+
+
+                        <p:accordionPanel id="accordionmantenimiento" styleClass="customaccordion" multiple="true" activeIndex="0,1" >
+                           
+                            
+                            <p:tab title="MANTENIMIENTO PREVENTIVO">
+                                <h:panelGrid columns="2" cellpadding="10">
+
+                                    <p:panelGrid columns="3" layout="grid" style="width: 100%" styleClass="ui-panelgrid-blank" >            
+                                        <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                                            <p:dataTable styleClass="ui-datatable-customtable" 
+                                                         value="#{reporteController.reporteBean.listProcesamiento}" rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE PROCESAMINETO ">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+                                                <p:column headerText=" " width="25">
+                                                    <p:selectBooleanCheckbox value="#{var.seleccion}"><p:ajax/></p:selectBooleanCheckbox>
+                                                </p:column>
+                                            </p:dataTable>
+                                            <br/>
+                                            <p:dataTable styleClass="ui-datatable-customtable" value="#{reporteController.reporteBean.listPreventivoImagen}" rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE IMAGEN ">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+                                                <p:column headerText=" " width="25">
+                                                    <p:selectBooleanCheckbox value="#{var.seleccion}"><p:ajax/></p:selectBooleanCheckbox>
+                                                </p:column>
+                                            </p:dataTable>
+
+
+                                        </p:panelGrid>
+
+
+                                        <p:dataTable styleClass="ui-datatable-customtable" value="#{reporteController.reporteBean.listPreventivoFijacion}" rowKey="#{var.id}"
+                                                     var="var">
+
+                                            <p:column headerText="SECCION DE FIJACION ">
+                                                <p:outputLabel value="#{var.descripcion}" />
+                                            </p:column>
+                                            <p:column headerText=" " width="25">
+                                                <p:selectBooleanCheckbox value="#{var.seleccion}"><p:ajax/></p:selectBooleanCheckbox>
+                                            </p:column>
+                                        </p:dataTable>
+
+
+
+
+                                        <p:dataTable styleClass="ui-datatable-customtable" value="#{reporteController.reporteBean.listPreventivoLimpieza}" rowKey="#{var.id}"
+                                                     var="var">
+
+                                            <p:column headerText="LIMPIEZA DE EXTERIORES ">
+                                                <p:outputLabel value="#{var.descripcion}" />
+                                            </p:column>
+                                            <p:column headerText=" " width="25">
+                                                <p:selectBooleanCheckbox value="#{var.seleccion}"><p:ajax/></p:selectBooleanCheckbox>
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                    </p:panelGrid>
+                                    <br/>
+                                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" style="width: 100%">
+
+                                        OBSERVACIONES:
+                                        <p:inputTextarea value="#{reporteController.reporteBean.reporte.observacionMantenimiento}" style="width: 100%"><p:ajax/></p:inputTextarea>
+                                    </p:panelGrid>
+
+
+                                </h:panelGrid>
+                            </p:tab>
+                            <p:tab title="MANTENIMIENTO CORRECTIVO">
+                                <h:panelGrid columns="2" cellpadding="10">
+
+                                    <p:panelGrid columns="2" layout="grid" style="width: 100%" styleClass="ui-panelgrid-blank">            
+
+
+                                        <p:panelGrid columns="1">
+                                            <p:dataTable id="idDatatableProcesamiento" styleClass="ui-datatable-customtable" rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         value="#{reporteController.reporteBean.listCorrectivoSuministros}" 
+                                                         rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SUMINISTROS">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoProcesamiento" value="#{var.tipoRepuesto}">
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'SUMINISTROS')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+                                                <p:column id="idTxtCodigoProcesamiento" headerText="CODIGO DE REPUESTO ">
+                                                    <p:inputText value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'SUMINISTROS')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+                                                <p:column width="55">
+                                                    <p:inputNumber value="#{var.porcentaje}" symbolPosition="s" symbol="%" rendered="#{not empty var.codigoRepuesto}"><p:ajax/></p:inputNumber>
+
+                                                </p:column>
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoProcesamiento,idTxtCodigoProcesamiento,idDatatableProcesamiento" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'SUMINISTROS')}">
+                                                        <p:resetInput target="idRadioTipoProcesamiento" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoProcesamiento" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+
+                                            </p:dataTable>
+                                            <br/>
+
+                                            <p:dataTable id="idDatatableImagen" styleClass="ui-datatable-customtable" rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         value="#{reporteController.reporteBean.listCorrectivoImagen}" 
+                                                         rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE IMAGEN ">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoImagen" value="#{var.tipoRepuesto}">
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'IMAGEN_CORRECTIVO')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+
+
+                                                <p:column headerText="CODIGO DE REPUESTO ">
+                                                    <p:inputText id="idTxtCodigoImagen" value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'IMAGEN_CORRECTIVO')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+                                                <p:column width="55">
+                                                    <p:inputNumber value="#{var.porcentaje}" symbolPosition="s" symbol="%" rendered="#{not empty var.codigoRepuesto}"><p:ajax/></p:inputNumber>
+                                                </p:column>
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoImagen,idTxtCodigoImagen,idDatatableImagen" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'IMAGEN_CORRECTIVO')}">
+                                                        <p:resetInput target="idRadioTipoImagen" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoImagen" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                            </p:dataTable>
+
+                                            <br/>
+
+                                            <p:dataTable id="idDatatableFijacion" styleClass="ui-datatable-customtable" rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         value="#{reporteController.reporteBean.listCorrectivoFijacion}" 
+                                                         rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE FIJACION ">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoFijacion" value="#{var.tipoRepuesto}">
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'FIJACION_CORRECTIVO')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+
+
+                                                <p:column headerText="CODIGO DE REPUESTO ">
+                                                    <p:inputText id="idTxtCodigoFijacion" value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'FIJACION_CORRECTIVO')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+
+                                                <p:column width="55">
+                                                    <p:inputNumber value="#{var.porcentaje}" symbolPosition="s" symbol="%" rendered="#{not empty var.codigoRepuesto}"><p:ajax/></p:inputNumber>
+                                                </p:column>
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoFijacion,idTxtCodigoFijacion,idDatatableFijacion" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'FIJACION_CORRECTIVO')}">
+                                                        <p:resetInput target="idRadioTipoFijacion" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoFijacion" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                            </p:dataTable>
+
+                                        </p:panelGrid>
+
+
+
+
+
+
+                                        <p:panelGrid columns="1">
+
+                                            <p:dataTable id="idDatatableRevelado" styleClass="ui-datatable-customtable" rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         value="#{reporteController.reporteBean.listCorrectivoRevelado}" 
+                                                         rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE REVELADO ">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoRevelado" value="#{var.tipoRepuesto}">
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'REVELADO')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+
+
+                                                <p:column headerText="CODIGO DE REPUESTO ">
+                                                    <p:inputText id="idTxtCodigoRevelado" value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'REVELADO')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+
+                                                <p:column width="55">
+                                                    <p:inputNumber value="#{var.porcentaje}" symbolPosition="s" symbol="%" rendered="#{not empty var.codigoRepuesto}"><p:ajax/></p:inputNumber>
+                                                </p:column>
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoRevelado,idTxtCodigoRevelado,idDatatableRevelado" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'REVELADO')}">
+                                                        <p:resetInput target="idRadioTipoRevelado" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoRevelado" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+
+                                            </p:dataTable>
+                                            <br/>
+
+                                            <p:dataTable id="idDatatableAlimentacion" styleClass="ui-datatable-customtable" 
+                                                         rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         value="#{reporteController.reporteBean.listCorrectivoAlimentacion}" rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="SECCION DE ALIMENTACION">
+                                                    <p:outputLabel value="#{var.descripcion}" />
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoAlimentacion" value="#{var.tipoRepuesto}" >
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'ALIMENTACION')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+
+                                                <p:column headerText="CODIGO DEL REPUESTO">
+                                                    <p:inputText  id="idTxtCodigoAlimentacion" value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'ALIMENTACION')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+                                                <p:column width="55">
+                                                    <p:inputNumber value="#{var.porcentaje}" symbolPosition="s" symbol="%" rendered="#{not empty var.codigoRepuesto}"><p:ajax/></p:inputNumber>
+                                                </p:column>
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoAlimentacion,idTxtCodigoAlimentacion,idDatatableAlimentacion" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'ALIMENTACION')}">
+                                                        <p:resetInput target="idRadioTipoAlimentacion" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoAlimentacion" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                            </p:dataTable>
+                                            <br/>
+                                            <p:dataTable id="idDatatableOtros" styleClass="ui-datatable-customtable" rowStyleClass="#{not empty var.tipoRepuesto and not empty var.codigoRepuesto ? 'filaSeleccionado' : null}"
+                                                         editable="true" editMode="cell" widgetVar="cellCars"
+                                                         value="#{reporteController.reporteBean.listCorrectivoOtros}" rowKey="#{var.id}"
+                                                         var="var">
+
+                                                <p:column headerText="OTROS">
+
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{var.descripcion}" /></f:facet>
+                                                        <f:facet name="input">
+                                                            <p:inputText id="idDescripcionOtro" value="#{var.descripcion}"  style="width:90%">
+                                                                <p:ajax/>
+                                                            </p:inputText>
+                                                        </f:facet>
+                                                    </p:cellEditor>
+
+
+
+                                                </p:column>
+
+                                                <p:column width="120" headerText="C   -   S" >
+                                                    <p:selectOneRadio id="idRadioTipoOtros" value="#{var.tipoRepuesto}">
+                                                        <f:selectItem itemLabel="" itemValue="C" />
+                                                        <f:selectItem itemLabel="" itemValue="S" />
+                                                        <p:ajax listener="#{reporteController.actualizarListaRadioButton(var,'OTROS')}"/>
+                                                    </p:selectOneRadio>
+                                                </p:column>
+
+
+                                                <p:column headerText="CODIGO DEL REPUESTO">
+                                                    <p:inputText id="idTxtCodigoOtros" value="#{var.codigoRepuesto}" style="width: 90%">
+                                                        <p:ajax event="blur" listener="#{reporteController.actualizarListaTextfield(var,'OTROS')}"/>
+                                                    </p:inputText>
+                                                </p:column>
+
+                                                <p:column width="35">
+                                                    <p:commandButton update="idRadioTipoOtros,idTxtCodigoOtros,idDatatableOtros,idDescripcionOtro" process="@this" icon="fa fa-remove" actionListener="#{reporteController.resetMantenimiento(var,'OTROS')}">
+                                                        <p:resetInput target="idRadioTipoOtros" clearModel="true" />
+                                                        <p:resetInput target="idTxtCodigoOtros" clearModel="true" />
+                                                        <p:resetInput target="idDescripcionOtro" clearModel="true" />
+                                                    </p:commandButton>
+                                                </p:column>
+
+                                            </p:dataTable>
+
+                                            <p:commandButton icon="fa fa-search" value="Buscar" process="@this" actionListener="#{reporteController.abrirModalMantenimientosOtros}"/>
+                                            <br/>
+                                            <p:panelGrid columns="2">
+                                                <h:outputText value="C = Cambiado"/>
+                                                <h:outputText value="S = Solicitar"/>
+                                            </p:panelGrid>
+
+                                        </p:panelGrid>
+
+
+
+
+                                    </p:panelGrid>
+
+
+
+                                </h:panelGrid>
+                            </p:tab>
+
+
+                        </p:accordionPanel>
+
+
+                    </p:column>
+
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">OBSERVACIONES / RECOMENDACIONES </div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="8">
+                        <p:inputTextarea style="width: 100%" value="#{reporteController.reporteBean.reporte.observacionesRecomendaciones}">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                    </p:column>
+
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">EXCLUSIVO PARA EL CLIENTE </div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="4">
+                        HORA DE INICIO:    <p:calendar pattern="HH:mm" timeOnly="true" locale="es" label="HORA DE INICIO" value="#{reporteController.reporteBean.reporte.horaInicio}"/>
+                    </p:column>
+                    <p:column colspan="4">
+                        HORA DE FINALIZACION   <p:calendar pattern="HH:mm" timeOnly="true" locale="es" label="HORA DE FINALIZACION" value="#{reporteController.reporteBean.reporte.horaFin}"/>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="4">
+                        <div align="center">
+                            <p:signature id="signatureTecnico"  style="width:400px;height:200px"  value="#{reporteController.reporteBean.usuarios.firma}"   guideline="true" 
+                                         base64Value="#{reporteController.reporteBean.usuarios.firmaBase64}" readonly="true"/>
+
+                            <br/>
+                            <p:outputLabel value="Firma Ing. de Soporte"/>
+                        </div><br/>
+                        <p:outputLabel value="NOMBRE:" />
+                        <p:inputText value="#{reporteController.reporteBean.usuarios.nombreCompleto}"><p:ajax/></p:inputText>
+                    </p:column>
+
+
+                    <p:column colspan="4">
+                        <p:commandButton value="Limpiar" icon="ui-icon-close" type="button" onclick="limpiarFirmaCliente();"  />
+                        <p:commandButton value="Guardar" icon="fa fa-save" process="@this" onclick="deshabilitarFirmaCliente();" />
+                        <div id="idDivFirma" align="center">
+                            <p:signature id="signatureCliente" style="width:400px;height:200px; pointer-events: " widgetVar="sig2" value="#{reporteController.reporteBean.reporte.firmaCliente}" guideline="true" 
+                                         base64Value="#{reporteController.reporteBean.reporte.firmaClienteBase64}" readonly="#{reporteController.reporteBean.estadoFirma}"/>
+
+                            <br/>
+                            <p:outputLabel value="Firma y Sello CLIENTE"/>
+                        </div><br/>
+                        <p:outputLabel value="NOMBRE:" />
+                        <p:inputText value="#{reporteController.reporteBean.reporte.nombreCliente}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+                </p:row>
+
+
+
+            </p:panelGrid>
+
+
+            <br/>
+            <div align="center">
+
+
+                <p:panelGrid styleClass="ui-panelgrid-blank">
+                    <p:row> 
+                        <p:column colspan="1">
+                            <p:commandButton value="Guardar" actionListener="#{reporteController.guardar}" update="form:mensaje"  disabled="#{reporteController.sesionController.sesionBean.isReporteVer}" ajax="false"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:commandButton value="Cancelar" actionListener="#{reporteController.cancelar}" process="@this" update="form" />
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:commandButton rendered="#{reporteController.reporteBean.disable}" ajax="false" icon="fa fa-file-pdf-o" id="botonpdf" value="PDF" actionListener="#{reporteController.PDF()}"/>
+
+                        </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+
+            </div>
+
+            <br/>
+            <br/><br/><br/><br/><br/>
+
+
+
+
+
+        </h:form>
+
+
+
+
+
+
+    </h:body>
+</html>
+

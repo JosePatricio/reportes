@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+    </ui:define>
+
+
+
+    <ui:define name="content">
+
+
+        <div class="modal fade" id="dlgRepuestos" tabindex="-1" role="dialog"
+             aria-labelledby="dlgRepuestosLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgRepuestosLabel">
+                            Repuestos
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>  
+                        </p:outputPanel>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="dlgModeloByRepuesto" tabindex="-1" role="dialog"
+             aria-labelledby="dlgMarcasLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgModelosLabel">
+                            Modelos por Repuesto
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formModelosByRepuesto" prependId="false">
+                            <p:commandButton value="Nuevo" actionListener="#{repuestoController.abrirModalRepuestoModelo}"/>
+                            <br/>
+
+                            <div align="center" class="ui-fluid">
+                                <h:outputText style="font-weight: bold" value="Repuesto: "/> 
+                                <h:outputText value="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporteSelected.descripcion}"/>
+                            </div>
+                            <br/>
+
+
+                            <p:dataTable value="#{repuestoController.detalleCatalogoReporteBean.listRepuestoModelosByIdRepuesto}"
+                                         var="repuestoModelo" reflow="true" widgetVar="wtblRepuestos"
+                                         rows="10"  rowKey="#{repuestoModelo.id}" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         selectionMode="single" 
+                                         emptyMessage="No se encontró registros">
+
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Buscar: " />
+                                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblRepuestos').filter()"/>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column headerText="Código" filterBy="#{repuestoModelo.codigoRepuesto}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.codigoRepuesto}">
+                                    <h:outputText value="#{repuestoModelo.codigoRepuesto}"/>
+                                </p:column>
+
+                                <p:column headerText="Repuesto" filterBy="#{repuestoModelo.idDetalleCatalogoReporte.descripcion}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.idDetalleCatalogoReporte.descripcion}">
+                                    <h:outputText value="#{repuestoModelo.idDetalleCatalogoReporte.descripcion}"/>
+                                </p:column>
+
+
+
+                                <p:column headerText="Marca" filterBy="#{repuestoModelo.idModelo.idMarca.marca}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.idModelo.idMarca.marca}">
+                                    <h:outputText value="#{repuestoModelo.idModelo.idMarca.marca}"/>
+                                </p:column>
+
+                                <p:column headerText="Modelo" filterBy="#{repuestoModelo.idModelo.idMarca.marca}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.idModelo.idMarca.marca}" >
+                                    <h:outputText value="#{repuestoModelo.idModelo.modelo}"/>
+                                </p:column>
+
+                                <p:column headerText="Stock" filterBy="#{repuestoModelo.stock}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.stock}">
+                                    <h:outputText value="#{repuestoModelo.stock}"/>
+                                </p:column>
+
+                                <p:column headerText="Descripción" filterBy="#{repuestoModelo.descripcion}" filterMatchMode="contains"
+                                          sortBy="#{repuestoModelo.descripcion}">
+                                    <h:outputText value="#{repuestoModelo.descripcion}"/>
+                                </p:column>
+
+                                <p:column width="50">
+                                    <div class="ui-fluid">
+                                        <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar" actionListener="#{repuestoController.abrirModalEdicionStockCodigo(repuestoModelo)}"/>
+                                        <p:tooltip for="idEditar" value="Editar"/>
+                                    </div>
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:separator/>
+                            <div align="center">
+                                <p:commandButton value="Cerrar" icon="ui-icon-closethick" actionListener="#{repuestoController.cerrarDialogModeloByRepuesto()}" immediate="true"/>
+                            </div>
+
+                        </h:form>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="dlgEdicionStockReparacion" tabindex="-1" role="dialog"
+             aria-labelledby="dlgEdicionStockReparacionLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgEdicionStockReparacionLabel">
+                            Edición del Stock
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel >
+                            <h:form id="formEdicionStockReparacion" prependId="false">
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" >
+
+                                        <p:outputLabel for="idEdicionCodigoLbl" value="Código:" />
+                                        <p:outputLabel id="idEdicionCodigoLbl" value="#{repuestoController.repuestoModeloBean.repuestoModelo.codigoRepuesto}"/>
+
+                                        <p:outputLabel for="idEdicionReparacionLbl" value="Repuesto:" />
+                                        <p:outputLabel id="idEdicionReparacionLbl" value="#{repuestoController.repuestoModeloBean.repuestoModelo.idDetalleCatalogoReporte.descripcion}"/>
+
+                                        <p:outputLabel for="idEdicionMarcaLbl" value="Marca:" />
+                                        <p:outputLabel id="idEdicionMarcaLbl" value="#{repuestoController.repuestoModeloBean.repuestoModelo.idModelo.idMarca.marca}"/>
+
+                                        <p:outputLabel for="idEdicionModeloLbl" value="Modelo:" />
+                                        <p:outputLabel id="idEdicionModeloLbl" value="#{repuestoController.repuestoModeloBean.repuestoModelo.idModelo.modelo}"/>
+
+                                        <p:outputLabel for="idEdicionStockReparacion" value="Stock" />
+                                        <p:inputText id="idEdicionStockReparacion" value="#{repuestoController.repuestoModeloBean.repuestoModelo.stock}"/>
+
+
+                                        <p:outputLabel for="idEdicionEstadoRepuestoModelo" value="Estado:"/>
+                                        <p:selectOneRadio id="idEdicionEstadoRepuestoModelo" value="#{repuestoController.repuestoModeloBean.repuestoModelo.estado}" style="margin-bottom:10px; padding: 5px;">
+                                            <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.listEstados}" var="estado" 
+                                                           itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                                        </p:selectOneRadio>
+
+                                    </p:panelGrid>
+                                    <p:separator/>
+                                </div>
+
+                                <div align="center">
+                                    <p:commandButton value="Guardar" icon="ui-icon-check"   actionListener="#{repuestoController.actualizarStockRepuesto}"/>
+                                    <p:commandButton value="Cerrar" icon="ui-icon-closethick" process="@this" onclick="$('#dlgEdicionStockReparacion').modal('hide');"/>
+                                </div>
+
+
+
+                            </h:form>
+                        </p:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal fade" id="dlgModeloRepuesto" tabindex="-1" role="dialog"
+             aria-labelledby="dlgModeloRepuestoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgModeloRepuestoLabel">
+                            Repuesto modelo
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formModelosRepuesto" prependId="false">
+
+                            <div class="ui-fluid">
+                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" >
+
+                                    <p:outputLabel for="idRepuestoModeloRepuesto" value="Repuesto" />
+                                    <p:outputLabel id="idRepuestoModeloRepuesto" value="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporteSelected.descripcion}" />
+
+                                    <p:outputLabel for="idRepuestoModeloCodigo" value="Código:" />
+                                    <p:inputText id="idRepuestoModeloCodigo" value="#{repuestoController.repuestoModeloBean.repuestoModelo.codigoRepuesto}" required="true" requiredMessage="El campo Código es requerido"/>
+
+                                    <p:outputLabel for="idRepuestoModeloModelo" value="Modelo:" />
+                                    <p:selectOneMenu appendTo="@this" id="idRepuestoModeloModelo" value="#{repuestoController.repuestoModeloBean.repuestoModelo.idModelo.id}"  filter="true" required="true" requiredMessage="Seleccione el modelo">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                        <f:selectItems value="#{repuestoController.modeloBean.listModelos}" var="var" itemValue="#{var.id}" itemLabel="#{var.modelo}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel for="idRepuestoModeloStock" value="Stock:" />
+                                    <p:inputNumber id="idRepuestoModeloStock" decimalPlaces="0" value="#{repuestoController.repuestoModeloBean.repuestoModelo.stock}" required="true" requiredMessage="El campo Stock es requerido"/>
+
+
+
+                                    <p:outputLabel for="idRepuestoModeloDescripcion" value="Descripción:" />
+                                    <p:inputTextarea id="idRepuestoModeloDescripcion" value="#{repuestoController.repuestoModeloBean.repuestoModelo.descripcion}" />
+
+
+                                    <p:outputLabel for="idEstadoRepuestoModelo" value="Estado:"/>
+                                    <p:selectOneRadio id="idEstadoRepuestoModelo" value="#{repuestoController.repuestoModeloBean.repuestoModelo.estado}" style="margin-bottom:10px; padding: 5px;">
+                                        <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.listEstados}" var="estado" 
+                                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                                    </p:selectOneRadio>
+
+
+
+                                </p:panelGrid>
+                                <p:separator/>
+                            </div>
+
+                            <div align="center">
+                                <p:commandButton value="Guardar" icon="ui-icon-check" actionListener="#{repuestoController.guardarRepuestoModelo}"/>
+                                <p:commandButton value="Cerrar" icon="ui-icon-closethick" onclick="$('#dlgModeloRepuesto').modal('hide');"/>
+                            </div>
+
+
+
+                        </h:form>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        <h:form id="formRepuestos" prependId="false">
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Administración de Repuestos</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" actionListener="#{repuestoController.abrirDialogRepuesto(null)}"/>
+            <br/> 
+
+            <p:dataTable id="tblRepuestos" widgetVar="wtblRepuestos" var="repuesto"  value="#{repuestoController.detalleCatalogoReporteBean.listDetalleCatalogoReporte}" 
+                         rows="10" reflow="true" rowKey="#{repuesto.id}" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporteSelected}"
+                         emptyMessage="No se encontró registros">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar: " />
+                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..."/>
+                        <p:commandButton icon="ui-icon-search" value="Buscar" onclick="PF('wtblRepuestos').filter()"/>
+                    </p:outputPanel>
+                </f:facet>
+
+
+
+
+                <p:column headerText="Nombre" sortBy="#{repuesto.descripcion}" filterBy="#{repuesto.descripcion}" filterMatchMode="contains">
+                    <h:outputText value="#{repuesto.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Grupo" sortBy="#{repuesto.idCabecera.descripcion}" filterBy="#{repuesto.idCabecera.descripcion}" filterMatchMode="contains">
+                    <f:facet name="filter">
+
+                        <p:selectOneMenu  onchange="PF('wtblRepuestos').filter()" filter="true" autoWidth="true" style="width: 100%">
+                            <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.groupSelectCatalogosMantenimientoFilter}" var="cab" 
+                                           itemLabel="#{cab.description}" itemValue="#{cab.description}"/>
+                        </p:selectOneMenu>
+
+                    </f:facet>
+                    <h:outputText value="#{repuesto.idCabecera.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Mantenimiento" sortBy="#{repuesto.idCabecera.tipo}" filterBy="#{repuesto.idCabecera.tipo}" filterMatchMode="contains">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('wtblRepuestos').filter()" filter="true" style="width: 100%">
+                            <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.tipoMantenimiento}" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{repuesto.idCabecera.tipo}" />
+                </p:column>
+
+
+                <p:column headerText="Estado" sortBy="#{sesionController.getStatus(repuesto.estado?1:0)}" width="100">
+                    <h:outputText value="#{sesionController.getStatus(repuesto.estado?1:0)}" />
+                </p:column>
+
+
+
+                <p:column width="100">
+
+                    <p:commandButton id="idModelos" icon="fa fa-fw fa-search" title="Ver Modelos" action="#{repuestoController.verModelosByRepuesto(repuesto)}"/>                            
+                    <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar" action="#{repuestoController.abrirDialogRepuesto(repuesto)}"/>
+
+                    <p:tooltip for="idModelos" value="Ver Modelos por repuesto"/>
+                    <p:tooltip for="idEditar" value="Editar"/>
+
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

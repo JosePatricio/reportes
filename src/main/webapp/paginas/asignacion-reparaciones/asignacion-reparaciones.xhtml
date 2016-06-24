@@ -1,0 +1,311 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                //when modal opens
+//                $('#dlgAsignacionReparaciones').on('shown.bs.modal', function (e) {
+//                    console.log('shown');
+//                });
+                //when modal closes
+                $('#dlgAsignacionReparaciones').on('hidden.bs.modal', function (e) {
+//                    console.log('hidden');
+                    $('.ui-widget-header').css('background', '');
+                    $('.ui-datatable .ui-datatable-header').css('background', '');
+                    // $("#pageContent").css({opacity: 1});
+                });
+            })
+
+
+
+        </script>
+
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <div class="modal fade" id="dlgAsignacionReparaciones" tabindex="-1" role="dialog"
+             aria-labelledby="dlgAsignacionReparacionLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-lg">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgAsignacionReparacionLabel">
+                            Asignar Reparación
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                                                <p:commandButton value="Guardar" icon="ui-icon-check" update="tblAsignacionReparaciones"
+                                                                 process="@form"
+                                                                 actionListener="#{marcaController.guardar()}"/>
+                                                <p:commandButton value="Cancelar" icon="ui-icon-closethick" 
+                                                                 actionListener="#{marcaController.cerrarDialog()}" immediate="true"/>
+                                            </div>-->
+                    <!--</h:form>-->
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="dlgEliminacionAsignacionReparaciones" tabindex="-1" role="dialog"
+             aria-labelledby="dlgdlgEliminacionAsignacionReparacionesLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgAsignacionReparacionLabel">
+                            Información
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h5>Está seguro que desea eliminar la asignación?</h5>
+
+                        <br/>
+                        <h:form id="eliminacionForm">
+                            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" >
+                                <h:outputText style="font-weight: bold;" value="Fecha:"/>
+                                <h:outputText value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.fechaInicioAtencion}"/>
+                                <h:outputText style="font-weight: bold;" value="Hora:"/>
+                                <h:outputText value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.horaInicioAtencion}"/>
+
+                                <h:outputText style="font-weight: bold;" value="Técnico:"/>
+                                <h:outputText value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.idUsuarioAtencion.nombreCompleto}"/>
+                                <h:outputText style="font-weight: bold;" value="Cliente:"/>                                
+                                <h:outputText value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.idProductoCliente.idCliente.cliente}"/>
+
+                                <h:outputText style="font-weight: bold;" value="Prioridad:"/>
+                                <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.prioridad)}">
+                                    #{sesionController.getNamePrioridad(asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.prioridad)}</span>
+                                <h:outputText style="font-weight: bold;" value="Tipo:"/>
+                                <h:outputText value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected.tipoReporte}"/>
+
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <h:form prependId="false">
+                            <p:commandButton icon="ui-icon-check" value="Si" actionListener="#{asignacionReparacionController.eliminarAsignacionReparacion()}"/>
+
+                            <p:commandButton icon="ui-icon-closethick" value="No" actionListener="#{asignacionReparacionController.ocultarAsignacionReparacion()}"/>
+                        </h:form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <h:form id="AsignacionReparacionForm" prependId="false">
+
+            <p:growl id="messages" showDetail="true" />
+
+
+            <div align="center">
+                <h2>Asignación de Reparaciones</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    
+            <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" 
+                             id="btnNuevo"
+                             immediate="true"
+                             actionListener="#{asignacionReparacionController.abrirDialogAsignacionReparacion(null)}"/>
+            <br/> 
+
+
+            <p:panel header="Filtros">
+                <div class="ui-fluid">
+                    <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank"
+                                 columnClasses="ui-grid-col-2,ui-grid-col-1,ui-grid-col-1,ui-grid-col-1,ui-grid-col-1, ui-grid-col-1">
+
+                        <p:selectCheckboxMenu id="multiple" label="--Técnicos--" appendTo="@this"                                                       
+                                              value="#{asignacionReparacionController.asignacionReparacionBean.listFilterUsuarios}"
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                            <f:selectItems value="#{asignacionReparacionController.asignacionReparacionBean.listUsuarios}" var="var" itemLabel="#{var.nombreCompleto}" itemValue="#{var.id}"/>
+                        </p:selectCheckboxMenu>
+
+                        <p:outputLabel for="fechaInicioFiltro" value="Fecha Inicio:"/>
+                        <p:calendar id="fechaInicioFiltro" locale="es" value="#{asignacionReparacionController.asignacionReparacionBean.fechaInicioFilter}" pattern="yyyy-MM-dd"
+                                    />
+
+                        <p:outputLabel for="fechaFinFiltro" value="Fecha Fin:" />
+                        <p:calendar id="fechaFinFiltro" value="#{asignacionReparacionController.asignacionReparacionBean.fechaFinFilter}" pattern="yyyy-MM-dd"
+                                    />
+
+                        <p:commandButton icon="fa fa-fw fa-search" value="Buscar" 
+                                         actionListener="#{asignacionReparacionController.filtrarAsignaciones()}"/>
+
+                    </p:panelGrid>
+                    <p:watermark for="fechaInicioFiltro" value="yyyy-mm-dd"/>
+                    <p:watermark for="fechaFinFiltro" value="yyyy-mm-dd"/>
+
+                </div>
+            </p:panel>
+            <br/>
+
+            <p:tabView id="tabViewAsignaciones">
+
+
+                <p:tab title="Tabla">
+                    <p:dataTable id="tblAsignacionReparaciones" widgetVar="wtblAsignacionReparaciones" var="asignacion"  value="#{asignacionReparacionController.asignacionReparacionBean.listAsignacionReparaciones}" 
+                                 rows="10" reflow="true" rowKey="#{asignacion.id}" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacionSelected}"
+                                 emptyMessage="No se encontró registros">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Buscar: " />
+                                <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." styleClass="non-decoration"
+                                             onkeyup="PF('wtblAsignacionReparaciones').filter()"/>
+                                <!--<p:commandButton icon="ui-icon-search" value="Buscar" onclick="PF('wtblAsignacionReparaciones').filter()"/>-->
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column headerText="Código" width="115" sortBy="#{asignacion.codigo}" filterBy="#{asignacion.codigo}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.codigo}" />
+                        </p:column>   
+
+                        <p:column headerText="Fecha Rep." width="115" sortBy="#{asignacion.fechaInicioAtencion}" filterBy="#{asignacion.fechaInicioAtencion}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.fechaInicioAtencion}" >
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:outputText>
+                        </p:column>    
+
+                        <p:column headerText="Hora Rep." width="115" sortBy="#{asignacion.horaInicioAtencion}" filterBy="#{asignacion.horaInicioAtencion}" filterMatchMode="contains">                         
+                            <h:outputText value="#{asignacion.horaInicioAtencion}"/>
+                        </p:column>    
+
+                        <p:column headerText="Técnico" sortBy="#{asignacion.idUsuarioAtencion.nombreCompleto}" filterBy="#{asignacion.idUsuarioAtencion.nombreCompleto}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.idUsuarioAtencion.nombreCompleto}" />
+                        </p:column>    
+
+                        <p:column headerText="Ruc" width="115" sortBy="#{asignacion.idProductoCliente.idCliente.ruc}" filterBy="#{asignacion.idProductoCliente.idCliente.ruc}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.idProductoCliente.idCliente.ruc}" />
+                        </p:column>
+
+                        <p:column headerText="Cliente" sortBy="#{asignacion.idProductoCliente.idCliente.cliente}" filterBy="#{asignacion.idProductoCliente.idCliente.cliente}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.idProductoCliente.idCliente.cliente}" />
+                        </p:column>
+
+                        <p:column headerText="Equipo" sortBy="#{asignacion.idProductoCliente.idProducto.equipo}" filterBy="#{asignacion.idProductoCliente.idProducto.equipo}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.idProductoCliente.idProducto.equipo}" />
+                        </p:column>                        
+
+                        <p:column headerText="Serie" width="150" sortBy="#{asignacion.idProductoCliente.serie}" filterBy="#{asignacion.idProductoCliente.serie}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.idProductoCliente.serie}" />
+                        </p:column>   
+
+                        <p:column headerText="Tipo" width="150" sortBy="#{asignacion.tipoReporte}" filterBy="#{asignacion.tipoReporte}" filterMatchMode="contains">
+                            <h:outputText value="#{asignacion.tipoReporte}" />
+                        </p:column>   
+
+                        <p:column width="80" headerText="Prioridad" sortBy="#{asignacion.prioridad}" >
+                            <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(asignacion.prioridad)}">#{sesionController.getNamePrioridad(asignacion.prioridad)}</span>
+                        </p:column>
+
+                        <p:column headerText="Estado" sortBy="#{asignacion.estado}" width="100">
+                            <h:outputText value="#{asignacion.estado}" />
+                        </p:column>
+
+                        <p:column width="110">
+
+                            <p:commandButton id="idVer" icon="fa fa-fw fa-search" title="Ver" action="#{asignacionReparacionController.redireccionarToSeleccionado(asignacion)}"
+                                             disabled="#{asignacion.idReporte == null}"/>
+                            <p:commandButton id="idEliminar" icon="fa fa-fw fa-remove" title="Eliminar" action="#{asignacionReparacionController.mostrarAsignacionReparacion(asignacion)}"
+                                             immediate="true" disabled="#{asignacion.idReporte != null}"/>
+                            <p:commandButton id="idEditar" disabled="#{asignacion.idReporte != null}" icon="fa fa-fw fa-pencil" title="Editar" action="#{asignacionReparacionController.abrirDialogAsignacionReparacion(asignacion)}"
+                                             immediate="true"/>
+                            <p:tooltip for="idVer" value="Ver Reporte"/>
+                            <p:tooltip for="idEliminar" value="Eliminar"/>
+                            <p:tooltip for="idEditar" value="Editar"/>
+                        </p:column>
+
+                    </p:dataTable>                            
+                </p:tab>
+
+                <p:tab title="Calendario">
+
+                    <p:panelGrid>
+
+                        <p:schedule id="schedule" value="#{asignacionReparacionController.asignacionReparacionBean.listEventoModels}" 
+                                    widgetVar="myschedule" timeZone="GMT-5" locale="es"
+                                    scrollTime="08:00"  showWeekNumbers="true"
+                                    axisFormat="HH:mm"  columnFormat="ddd DD/MM"
+                                    view="agendaWeek" resizable="true">
+
+                            <p:ajax event="dateSelect" listener="#{asignacionReparacionController.onDateSelect}"/>
+                            <p:ajax event="eventSelect" listener="#{asignacionReparacionController.onEventSelect}"/>
+<!--                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
+                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />-->
+
+                        </p:schedule>
+
+                        <!--</h:panelGrid>-->
+                    </p:panelGrid>    
+
+                </p:tab>
+
+            </p:tabView>
+
+        </h:form>
+
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Siguiente',
+                nextText: 'Anterior',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                weekHeader: 'Hf',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo-día'
+            };
+        </script>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+</ui:composition>
+

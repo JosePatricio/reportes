@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditModelos" prependId="false">   
+
+            <p:focus context="formEditModelos"/>
+            <div class="ui-fluid">
+                <p:tabView id="tabViewRepuestos">
+                    
+                    <p:tab id="tabDatosModelo" title="Datos Modelo">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:outputLabel for="nombreMarcaModelo" value="Marca:"/>
+
+                            <p:selectOneMenu id="nombreMarcaModelo" value="#{modeloController.modeloBean.idMarca}" 
+                                             filter="true" filterMatchMode="contains" 
+                                             autoWidth="true" appendTo="@this" >
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItems value="#{modeloController.modeloBean.listMarcas}" var="marca"
+                                               itemLabel="#{marca.marca}" itemValue="#{marca.id}"/>
+                                <p:ajax listener="#{modeloController.cambioMarcaEvento}"   />  
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="nombreModelo" value="Modelo:"/>
+                            <p:inputText id="nombreModelo" required="true" requiredMessage="El modelo es campo obligatorio"
+                                         value="#{modeloController.modeloBean.modelo.modelo}"/>
+
+                            <p:outputLabel for="descripcionModelo" value="Descripción:"/>
+                            <p:inputTextarea id="descripcionModelo" value="#{modeloController.modeloBean.modelo.descripcion}"/>
+
+                            <p:outputLabel for="estadoModelo" value="Estado:"/>
+                            <p:selectOneRadio id="estadoModelo" value="#{modeloController.modeloBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                                <f:selectItems value="#{modeloController.modeloBean.listEstados}" var="estado" 
+                                               itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                            </p:selectOneRadio>
+
+                        </p:panelGrid>
+                    </p:tab>
+
+                    <p:tab id="tabRepuestos" title="Asignación" disabled="#{modeloBean.tabAsignacion}">
+
+
+                        <p:panelGrid columns="2">
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <h:outputText style="font-weight: bold; color: #0088CC;" value="Repuestos Disponibles"/>
+
+                                <p:dataTable id="tblRepuestos" widgetVar="wtblRepuestos" var="repuesto"  
+                                             reflow="true"
+                                             value="#{modeloController.modeloBean.listDetalleCatalogoReportes}"
+                                             rows="10"  rowKey="#{repuesto.id}" paginator="true" paginatorPosition="bottom"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             selectionMode="single" selection="#{modeloController.modeloBean.detalleCatalogoReporteSelected}"
+                                             emptyMessage="No se encontró registros">
+
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar: " />
+                                            <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblRepuestos').filter()"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+                                    <p:column headerText="Repuesto" filterBy="#{repuesto.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuesto.descripcion}" />
+                                    </p:column>
+
+                                    <p:column width="50">
+                                        <p:commandButton id="btnAgregarRepuesto" icon="ui-icon-plus" 
+                                                         process="@this"                                                      
+                                                         actionListener="#{modeloController.abrirModalRepuestoSeleccionado(repuesto)}"
+                                                         immediate="true"/>
+                                        <p:tooltip for="btnAgregarRepuesto" value="Agregar Repuesto"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <h:outputText style="font-weight: bold; color: #0088CC;" value="Repuestos Seleccionados"/>
+
+                                <p:dataTable id="tblRepuestoModelo" widgetVar="wtblRepuestoModelo" var="repuestoModelo"  
+                                             reflow="true"
+                                             value="#{modeloController.modeloBean.listRespuestoModelosByModelo}"
+                                             rows="5"  rowKey="#{repuestoModelo.idDetalleCatalogoReporte.id}" paginator="true" paginatorPosition="bottom"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             selectionMode="single" selection="#{modeloController.modeloBean.respuestoModeloSelected}"
+                                             emptyMessage="No se encontró registros">
+
+
+                                    <p:column headerText="Código" filterBy="#{repuestoModelo.idDetalleCatalogoReporte.codigoRepuesto}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuestoModelo.codigoRepuesto}" />
+                                    </p:column>
+
+                                    <p:column headerText="Repuesto" filterBy="#{repuestoModelo.idDetalleCatalogoReporte.descripcion}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuestoModelo.idDetalleCatalogoReporte.descripcion}" />
+                                    </p:column>
+
+                                    <p:column headerText="Stock" filterBy="#{repuestoModelo.stock}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuestoModelo.stock}" />    
+                                    </p:column>
+                                    
+                                    <p:column headerText="Marca" filterBy="#{repuestoModelo.idModelo.idMarca.marca}" filterMatchMode="contains">
+                                        <h:outputText value="#{repuestoModelo.idModelo.idMarca.marca}" />
+                                    </p:column>
+
+                                    <p:column width="50">
+                                        <p:commandButton id="btnEliminarRepuesto" icon="ui-icon-minus" 
+                                                         actionListener="#{modeloController.eliminarRepuesto(repuestoModelo)}"
+                                                         update="tblRepuestoModelo"
+                                                         immediate="true"/>
+                                        <p:tooltip for="btnEliminarRepuesto" value="Eliminar Repuesto"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+
+                    </p:tab>
+
+
+                </p:tabView>
+            </div>
+            <p:separator/>
+            <div align="center">
+                <p:commandButton update="tblModelos, @form" value="Guardar" actionListener="#{modeloController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{modeloController.cerrarDialog()}" immediate="true"/>
+            </div>
+
+        </h:form>   
+
+    </h:body>
+
+</html>

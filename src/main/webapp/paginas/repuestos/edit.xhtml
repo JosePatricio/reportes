@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditRepuestos" prependId="false">   
+            <p:focus context="formEditRepuestos"/>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+
+                    <p:outputLabel for="nombreRepuesto" value="Repuesto:"/>
+                    <p:inputText id="nombreRepuesto" value="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporte.descripcion}" 
+                                 required="true" requiredMessage="El campo repuesto es obligatorio"
+                                 />
+
+             
+                    
+                    <p:outputLabel for="grupo" value="Grupo:"/>
+                    <p:selectOneMenu  id="grupo"  autoWidth="true" appendTo="@this" 
+                                      value="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporte.idCabecera.id}"
+                                      required="true" requiredMessage="El campo grupo es obligatorio">
+                        <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                        <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.groupSelectCatalogosMantenimiento}" var="cab" />
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel for="estadoRepuesto" value="Estado:"/>
+                    <p:selectOneRadio id="estadoRepuesto" value="#{repuestoController.detalleCatalogoReporteBean.detalleCatalogoReporte.estado}" style="margin-bottom:10px; padding: 5px;">
+                        <f:selectItems value="#{repuestoController.detalleCatalogoReporteBean.listEstados}" var="estado" 
+                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value==1}"/>
+                    </p:selectOneRadio>
+
+                </p:panelGrid>
+
+                
+                
+
+            </div>
+            <p:separator/>
+            <div align="center">
+                <p:commandButton update="tblRepuestos, @form" value="Guardar" actionListener="#{repuestoController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{repuestoController.cerrarDialog()}" immediate="true"/>
+            </div>
+
+        </h:form>   
+
+    </h:body>
+
+</html>

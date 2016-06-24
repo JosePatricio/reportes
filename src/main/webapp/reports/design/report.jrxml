@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-01-25T16:45:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c021b224-2526-4705-b508-3498325083e6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<subDataset name="Dataset1" uuid="298b4c09-a52d-4bce-b67e-c633e9398863">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<subDataset name="Dataset2" uuid="df158721-89e9-4d44-8a7b-e254c1a012b6">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="parametro_1" class="java.lang.String"/>
+	<parameter name="parametro_2" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="firstname" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String"/>
+	<field name="age" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="230" y="3" width="320" height="53" uuid="828e96e8-0a64-4b44-bf72-f9c6615a7f68">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Innovaciones Tecnológicas "Imaginarium"]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="11" y="67" width="219" height="30" uuid="126f7919-9e3e-4a66-b2e2-57ee0301e357"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Parametro_1: "+$P{parametro_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="67" width="235" height="30" uuid="6bc701bf-e64d-441a-bb6a-c2c3408216c5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Parametro_2_Int: "+$P{parametro_2}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="20" y="3" width="190" height="67" uuid="c54a536f-2c8f-4fa2-ae53-8023da409545"/>
+				<imageExpression><![CDATA["logo_innovaciones.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="5" width="50" height="20" uuid="433a47ca-b4c9-4727-8beb-e3c717b4f3f2"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="5" width="210" height="20" uuid="088f24fa-3d72-4a8b-8b48-308b79b19d4b"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firstname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="5" width="180" height="20" uuid="66901cc2-d3db-40b6-8c01-829cd81f8bfb"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lastname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="5" width="70" height="20" uuid="e2530968-d11d-4c08-988b-9aa31dbced4e"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Age]]></text>
+			</staticText>
+			<line>
+				<reportElement x="9" y="27" width="540" height="1" uuid="cf8addae-9e02-4b20-b9ae-5a5cb49043e8"/>
+			</line>
+			<line>
+				<reportElement x="11" y="2" width="540" height="1" uuid="265195e2-9cd8-461c-bd57-873871e629f9"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="50" height="21" uuid="b8bf73e6-baf9-4797-918a-9c260680b845">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="180" height="21" uuid="9dfdb39b-06d8-4972-81f7-cb85bf7e1958">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{firstname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="180" height="21" uuid="706043e1-015e-4243-a7ee-2e013b1ddaea"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="70" height="21" uuid="52d7de9b-ffc1-4070-b1f3-522c1542e08f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="9" y="23" width="540" height="1" uuid="3f5ebc77-5810-489a-b800-dd14aa5019ab"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="410" y="10" width="140" height="20" uuid="61a2ecdb-daa0-435f-9b67-a9ee6e61bdf3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="24" splitType="Stretch"/>
+	</summary>
+</jasperReport>

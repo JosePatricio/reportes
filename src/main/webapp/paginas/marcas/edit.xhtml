@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditMarcas" prependId="false">   
+
+            <p:growl autoUpdate="true" showDetail="true"/>
+            <p:focus context="formEditMarcas"/>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                    <p:outputLabel for="nombreMarca" value="Marca:"/>
+                    <p:inputText id="nombreMarca" value="#{marcaController.marcaBean.marca.marca}" 
+                                 required="true" requiredMessage="El campo marca es obligatorio"
+                                 autocomplete="off"/>
+
+                    <p:outputLabel for="descripcionMarca" value="Descripción:"/>
+                    <p:inputTextarea id="descripcionMarca" value="#{marcaController.marcaBean.marca.descripcion}"/>
+
+
+                    <p:outputLabel for="estadoMarca" value="Estado:"/>
+                    <p:selectOneRadio id="estadoMarca" value="#{marcaController.marcaBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                        <f:selectItems value="#{marcaController.marcaBean.listEstados}" var="estado" 
+                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                    </p:selectOneRadio>
+
+                </p:panelGrid>
+            </div> 
+            <p:separator/>
+            <div align="center">
+                <p:commandButton update="tblMarcas, @form" value="Guardar" actionListener="#{marcaController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{marcaController.cerrarDialog()}" immediate="true"/>
+            </div>
+        </h:form>   
+
+    </h:body>
+
+</html>

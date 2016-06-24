@@ -1,0 +1,203 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26/01/2017, 9:21:49
+    Author     : pisama
+*/
+
+/*.fc-content
+{
+    background: #000000 !important;
+}*/
+
+.fc-today  /* today */
+{
+    /*background-image: linear-gradient(to bottom, #44565F, #0077b3) !important;*/
+}
+
+.ui-radiobutton-icon {
+    margin-left: 0px !important;
+    margin-top: -1px !important;
+}
+
+.ui-datepicker{
+    z-index: 99999999 !important;
+    font-size: 13px !important;
+}
+
+.ui-selectcheckboxmenu-list-item label{
+    text-transform: uppercase !important;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    text-transform: uppercase !important;
+}
+
+.ui-separator {
+    margin-top: 0px !important;
+    margin-bottom: 3px !important;
+}
+
+.h2, h2 {
+    font-size: 22px !important;
+    /*text-align: left !important;*/
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 0px !important;
+    margin-bottom: 3px !important;
+}
+
+.ui-inputfield{
+    text-transform: uppercase !important;    
+}
+
+.ui-datatable table tbody tr td{
+    text-transform: uppercase !important;
+}
+
+.ui-datatable-empty-message {
+    background-color: #9acfea !important;
+    text-align: center !important;
+    text-transform: initial !important;        
+}
+
+.modal-backdrop {
+    background-color: #000000 !important;
+    opacity: 0.5 !important;
+}
+
+.ui-selectoneradio label {
+    display: block;
+    margin-top: 4px;
+    margin-right: 10px;
+}
+
+.ui-dialog { 
+    z-index: 999999 !important;
+    background-color: transparent !important;
+    border: 0px none transparent !important;
+}
+
+.ui-widget-overlay {
+    background: #000000 !important;
+    opacity: 0.5 !important;
+    filter: Alpha(Opacity=50);
+}
+
+.ui-growl {
+    z-index: 999999 !important;
+}
+
+
+.comand-link{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 19px;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+
+html, body {
+    margin: 0px !important;
+    /*    max-width: 100% !important;
+        overflow-x: hidden !important;*/
+}
+
+.non-decoration
+{
+    text-decoration: none;
+}
+
+.ui-button .ui-button-text {
+    font-size: 13px;
+    line-height: normal;
+
+}
+
+.ui-widget,.ui-widget .ui-widget {
+    font-size: 95% !important;
+    /*font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;*/
+    /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;*/
+}
+
+
+
+
+.ui-datatable-customtable table tbody tr td {
+    color: black;
+    border: solid 1px #d9e3e8;
+    font-size: 12px;
+    /*font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;*/
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 1px 4px 1px !important;
+}
+
+.ui-datatable table tbody tr td {
+    color: black;
+    border: solid 1px #d9e3e8;
+    font-size: 12px;
+    /*font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;*/
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 1px 4px 1px !important;
+}
+
+.ui-datatable th{
+    color: black;
+    border: solid 1px #d9e3e8;
+    font-size: 13px;
+    /*font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;*/
+
+}
+
+
+
+.ui-accordion-customaccordion .ui-accordion-header {
+    cursor: pointer;
+    position: relative;
+    margin-top: 1px;
+    min-height: 0;
+    padding: .5em .5em .5em 2.2em;
+    padding-left: 50% !important;
+}
+
+.ui-clock
+{
+    width: 40px !important;
+}
+
+.filaSeleccionado {
+    background: #007BB9 !important ;
+}
+
+.filaSinStock{
+    background: #c12e2a !important ;
+}
+
+.textoNormal{
+    text-transform: none !important; 
+}
+
+.lower-text{
+    text-transform: lowercase  !important;    
+}
+
+.ui-icon-check {
+    background-position: -66px -146px !important;
+}
+
+.ui-radiobutton-icon {
+    margin-left: -1px !important;
+    margin-top: -1px !important;
+}

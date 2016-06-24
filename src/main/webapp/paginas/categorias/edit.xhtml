@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditCategorias" prependId="false">   
+
+            <p:growl autoUpdate="true" showDetail="true"/>
+            <p:focus context="formEditCategorias"/>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                    <p:outputLabel for="nombreCategoria" value="Categoria:"/>
+                    <p:inputText id="nombreCategoria" value="#{categoriaController.categoriaBean.categoria.nombre}" 
+                                 required="true" requiredMessage="El campo categoria es obligatorio"
+                                 autocomplete="off"/>
+
+                    <p:outputLabel for="descripcionCategoria" value="Descripción:"/>
+                    <p:inputTextarea id="descripcionCategoria" value="#{categoriaController.categoriaBean.categoria.descripcion}"/>
+
+
+                    <p:outputLabel for="estadoCategoria" value="Estado:"/>
+                    <p:selectOneRadio id="estadoCategoria" value="#{categoriaController.categoriaBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                        <f:selectItems value="#{categoriaController.categoriaBean.listEstados}" var="estado" 
+                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                    </p:selectOneRadio>
+
+                </p:panelGrid>
+            </div> 
+            <p:separator/>
+            <div align="center">
+                <p:commandButton update="tblCategorias, @form" value="Guardar" actionListener="#{categoriaController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{categoriaController.cerrarDialog()}" immediate="true"/>
+            </div>
+        </h:form>   
+
+    </h:body>
+
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+      
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="modal fade" id="dlgCategorias" tabindex="-1" role="dialog"
+             aria-labelledby="dlgCategoriasLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditCategorias" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgCategoriasLabel">
+                            Categorias
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>  
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                                                <p:commandButton value="Guardar" icon="ui-icon-check" update="tblCategorias"
+                                                                 process="@form"
+                                                                 actionListener="#{categoriaController.guardar()}"/>
+                                                <p:commandButton value="Cancelar" icon="ui-icon-closethick" 
+                                                                 actionListener="#{categoriaController.cerrarDialog()}" immediate="true"/>
+                                            </div>-->
+                    <!--</h:form>-->
+                </div>
+
+            </div>
+        </div>
+
+        <h:form id="formCategorias" prependId="false">
+
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Administración de Categorias</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    
+            <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" 
+                             id="btnNuevo" 
+                             actionListener="#{categoriaController.abrirDialogCategoria(null)}"/>
+            <br/> 
+
+            <p:dataTable id="tblCategorias" widgetVar="wtblCategorias" var="categoria"  value="#{categoriaController.categoriaBean.listCategorias}" 
+                         rows="10" reflow="true" rowKey="#{categoria.id}" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{categoriaController.categoriaBean.categoriaSelected}"
+                         emptyMessage="No se encontró registros">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar: " />
+                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeydown="PF('wtblCategorias').filter()"/>                        
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="Nombre" sortBy="#{categoria.nombre}" filterBy="#{categoria.nombre}" filterMatchMode="contains">
+                    <h:outputText value="#{categoria.nombre}" />
+                </p:column>
+
+                <p:column headerText="Descripción" sortBy="#{categoria.descripcion}" filterBy="#{categoria.descripcion}" filterMatchMode="contains">
+                    <h:outputText value="#{categoria.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Estado" sortBy="#{sesionController.getStatus(categoria.estado)}" width="100">
+                    <h:outputText value="#{sesionController.getStatus(categoria.estado)}" />
+                </p:column>
+
+                <p:column width="50">
+                    <div class="ui-fluid">
+                        <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar"                                          
+                                         actionListener="#{categoriaController.abrirDialogCategoria(categoria)}"/>
+                        <p:tooltip for="idEditar" value="Editar"/>
+                    </div>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

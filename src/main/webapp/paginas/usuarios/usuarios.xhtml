@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+    </ui:define>
+
+
+    <ui:define name="content">
+
+        <div class="modal fade" id="dlgUsuarios" tabindex="-1" role="dialog"
+             aria-labelledby="dlgUsuariosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgUsuariosLabel">
+                            Usuarios
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>  
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                                                 <p:commandButton value="Guardar" actionListener="#{usuariosController.guardar}" icon="ui-icon-check"/>
+                                            <p:commandButton icon="ui-icon-closethick" value="Cancelar" actionListener="#{usuariosController.cerrarDialog()}" immediate="true"/>
+
+                                            </div>-->
+                    <!--</h:form>-->
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--        <p:dialog id="dialogUsuarios" appendTo="@(body)"  header="Usuario" closeOnEscape="true"
+                          position="top" responsive="true" width="60%"
+                          style="overflow-y: scroll; max-height:85%; margin-bottom:50px;"
+                          widgetVar="dlgUsuarios" modal="true"   >
+                    <ui:include src="edit.xhtml" />
+                </p:dialog>   -->
+
+
+        <h:form id="formUsuarios" prependId="false">
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Administración de Usuarios</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" actionListener="#{usuariosController.abrirDialogUsuario(null)}"/>
+            <br/> 
+
+
+
+
+            <p:dataTable id="tblUsuarios" widgetVar="wtblUsuarios" var="usuario"  value="#{usuariosController.usuarioBean.listUsuarios}" 
+                         rows="10" reflow="true" 
+                         rowKey="#{usuario.id}" paginator="true" paginatorPosition="bottom" 
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{usuariosController.usuarioBean.usuarioSelected}"
+                         styleClass="table table-striped table-bordered nowrap">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar :" />
+                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblUsuarios').filter()"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column width="100" headerText="Código" sortBy="#{usuario.codigo}" filterBy="#{usuario.codigo}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.codigo}" />
+                </p:column>
+
+                <p:column width="100" headerText="CI/DNI" sortBy="#{usuario.dni}" filterBy="#{usuario.dni}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.dni}" />
+                </p:column>
+
+                <p:column width="100" headerText="Usuario" sortBy="#{usuario.usuario}" filterBy="#{usuario.usuario}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.usuario}" />
+                </p:column>
+
+                <p:column headerText="Nombre" sortBy="#{usuario.nombre}" filterBy="#{usuario.nombre}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.nombre}" />
+                </p:column>
+
+                <p:column headerText="Apellido" sortBy="#{usuario.apellido}" filterBy="#{usuario.apellido}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.apellido}" />
+                </p:column>
+
+                <p:column headerText="Dirección" sortBy="#{usuario.direccion}" filterBy="#{usuario.direccion}" filterMatchMode="contains">
+                    <h:outputText value="#{usuario.direccion}" />
+                </p:column>
+
+                <p:column headerText="Telefono" sortBy="#{usuario.telefono}" filterBy="#{usuario.telefono}" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{usuario.telefono}" />
+                </p:column>
+
+                <p:column headerText="Celular" sortBy="#{usuario.celular}" filterBy="#{usuario.celular}" 
+                          filterMatchMode="contains">
+                    <h:outputText value="#{usuario.celular}" />
+                </p:column>
+
+                <p:column headerText="Correo" sortBy="#{usuario.mail}" filterBy="#{usuario.mail}" filterMatchMode="contains">
+                    <h:outputText style="text-transform: lowercase !important" value="#{usuario.mail}" />
+                </p:column>
+                
+                 <p:column headerText="Estado" sortBy="#{sesionController.getStatus(usuario.estado)}" width="100">
+                    <h:outputText value="#{sesionController.getStatus(usuario.estado)}" />
+                </p:column>
+
+                <p:column width="50">
+                    <div class="ui-fluid">
+                        <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar" action="#{usuariosController.abrirDialogUsuario(usuario)}"/>
+                        <p:tooltip for="idEditar" value="Editar"/>
+                    </div>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

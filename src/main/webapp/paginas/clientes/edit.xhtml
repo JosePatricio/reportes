@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditClientes" prependId="false">   
+            <p:focus context="formEditClientes"/>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+
+                    <p:outputLabel for="rucCliente" value="CI/DNI.:"/>
+                    <p:inputText id="rucCliente" value="#{clienteController.clienteBean.cliente.ruc}" 
+                                 required="true" requiredMessage="El campo CI/DNI es obligatorio"
+                                 />
+
+                    <p:outputLabel for="nombreCliente" value="Nombres:"/>
+                    <p:inputText id="nombreCliente" value="#{clienteController.clienteBean.cliente.cliente}" 
+                                 required="true" requiredMessage="El campo nombre es obligatorio"
+                                 />
+
+                    <p:outputLabel for="telefonoCliente" value="Teléfono:"/>
+                    <p:inputText id="telefonoCliente" value="#{clienteController.clienteBean.cliente.telefono}" 
+                                 required="true" requiredMessage="El campo teléfono es obligatorio"
+                                 />
+
+                    <p:outputLabel for="direccionCliente" value="Dirección:"/>
+                    <p:inputText id="direccionCliente" value="#{clienteController.clienteBean.cliente.direccion}" />
+
+                    <p:outputLabel for="emailCliente" value="E-mail:"/>
+                    <p:inputText styleClass="lower-text" id="emailCliente" value="#{clienteController.clienteBean.cliente.email}" />
+
+                    <p:outputLabel value="Prioridad:" />
+
+                    <p:selectOneMenu value="#{clienteController.clienteBean.prioridadSelected}" appendTo="@this"
+                                     required="true" filter="true" requiredMessage="El campo prioridad es obligatorio">
+                        <f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{clienteController.clienteBean.listPrioridades}" var="prioridad"
+                                       itemLabel="#{prioridad.propertyName}" itemValue="#{prioridad.value}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="estadoMarca" value="Estado:"/>
+                    <p:selectOneRadio id="estadoMarca" value="#{clienteController.clienteBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                        <f:selectItems value="#{clienteController.clienteBean.listEstados}" var="estado" 
+                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                    </p:selectOneRadio>
+
+                </p:panelGrid>
+            </div>
+            <p:separator/>
+            <div align="center">
+                <p:commandButton value="Guardar" actionListener="#{clienteController.guardar()}" icon="ui-icon-check" update="@form"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{clienteController.cerrarDialog()}" immediate="true"/>
+            </div>
+
+        </h:form>   
+
+    </h:body>
+
+</html>

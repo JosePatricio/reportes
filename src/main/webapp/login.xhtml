@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+        <meta charset="utf-8" />
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <!--<link href="#{request.contextPath}/resources/css/css.css" rel="stylesheet" type="text/css"/>-->
+        <link rel="icon" type="image/x-icon" href="/reporte/resources/images/logo.ico"/>    
+        
+        <f:metadata >
+            <f:event type="preRenderView" listener="#{loginController.controlSessionSpringSecurity}"/>
+        </f:metadata>
+    </h:head>
+    <h:body>
+
+
+        <div class="container">
+
+            <div class="page-header">
+                <center>
+                    <p:graphicImage value="resources/images/InnovacionesLogo.png" />   
+                </center>
+            </div>
+
+            <!-- Simple Login - START -->
+            <h:form id="formLogin" prependId="false" class="col-md-12">
+
+              
+                
+                <div class="form-group">
+                    <p:inputText id="j_username" required="true" requiredMessage="Ingrese usuario" autocomplete="off" styleClass="form-control input-lg" 
+                                 style="text-align: center; text-decoration: none !important;" 
+                                 value="#{loginController.usuarioBean.usuario.usuario}" placeholder="Usuario"/>
+                </div>
+                <div class="form-group">
+                    <p:password id="j_password" required="true" requiredMessage="Ingrese contraseña" styleClass="form-control input-lg" autocomplete="off" 
+                                style="text-align: center; text-decoration: none !important;" value="#{loginController.usuarioBean.usuario.clave}" placeholder="Contraseña"/>
+                </div>
+
+                <div class="form-group" >
+                    <p:outputPanel rendered="#{loginController.msj}">
+                        <c:if test="${not empty param['status']}"> 
+                            <center>
+                                <p:outputLabel style="color: red" value="Usuario/Contraseña Incorrectos"/>
+                            </center>
+                        </c:if> 
+                    </p:outputPanel>
+                </div>
+
+                <div class="form-group">
+                    <p:commandButton styleClass="btn btn-primary btn-lg btn-block" type="submit" ajax="false" value="Ingresar" action="#{loginController.doLogin}"/>
+                </div>
+
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage name="/images/ajaxloadingbar.gif" />            
+                </p:dialog>
+            </h:form>
+            <!-- Simple Login - END -->
+
+        </div>
+
+
+
+
+
+
+    </h:body>
+</html>
+

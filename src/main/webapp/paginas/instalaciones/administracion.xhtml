@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form" prependId="false">
+
+            <f:event type="preRenderView" listener="#{administracionInstalacionesController.mensajeSession}" />
+
+            <p:growl id="msg" autoUpdate="true" showSummary="true" showDetail="true"/>
+
+
+            <div align="center">
+                <h2>Administración de Reportes de Instalación</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+
+            <br/> 
+
+            <p:dataTable id="reporte" widgetVar="reportewv" var="var"  
+                         value="#{administracionInstalacionesController.consultasBean.reportesDTOs}" 
+                         rows="10"  rowKey="#{var.id}"                         
+                         filteredValue="#{administracionInstalacionesController.consultasBean.reportesDTOsFiltered}" 
+                         paginator="true" paginatorPosition="bottom" reflow="true"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{administracionInstalacionesController.consultasBean.reportesDTOSelected}">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar :" />
+                        <p:inputText id="globalFilter" onkeyup="PF('reportewv').filter()" style="width:150px" placeholder="Ingresar"/>
+                    </p:outputPanel>
+                </f:facet>
+
+
+                <p:column headerText="N° Reporte" sortBy="#{var.numeroFactura}" filterBy="#{var.numeroFactura}" filterMatchMode="contains">
+                    <h:outputText value="#{administracionInstalacionesController.fomatearNumeroReporte(var.numeroFactura)}" />
+                </p:column>
+
+                <p:column headerText="Fecha" sortBy="#{var.fecha}" filterBy="#{var.fecha}" filterMatchMode="contains">
+                    <h:outputText value="#{var.fecha}" >
+                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm:ss" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Factura" sortBy="#{var.factura}" filterBy="#{var.factura}" filterMatchMode="contains">
+                    <h:outputText value="#{var.factura}" />
+                </p:column>
+
+                <p:column headerText="Equipo" sortBy="#{var.equipo}" filterBy="#{var.equipo}" filterMatchMode="contains">
+                    <h:outputText value="#{var.equipo}" />
+                </p:column>
+
+                <p:column headerText="Serial" sortBy="#{var.serial}" filterBy="#{var.serial}" filterMatchMode="contains">
+
+                    <h:outputText value="#{var.serial}" />
+                </p:column>
+
+                <p:column headerText="Cliente" sortBy="#{var.cliente}" filterBy="#{var.cliente}" filterMatchMode="contains">
+                    <h:outputText value="#{var.cliente}" />
+                </p:column>
+
+                <p:column headerText="Técnico" sortBy="#{var.soporte}" filterBy="#{var.soporte}" filterMatchMode="contains">
+                    <h:outputText value="#{var.soporte}" />
+                </p:column>
+
+                <p:column headerText="Tipo" sortBy="#{var.tipo}" filterBy="#{var.tipo}" filterMatchMode="exact">
+                    <h:outputText value="#{var.tipo}" />
+                </p:column>
+                
+                <p:column headerText="Subtipo" sortBy="#{var.subtipo}" filterBy="#{var.subtipo}" filterMatchMode="exact">
+                    <h:outputText value="#{var.subtipo}" />
+                </p:column>
+
+                <p:column headerText="Acciones" width="130" >
+                    <div align="right">
+                        <p:commandButton id="idEditar"  icon="fa fa-edit" disabled="#{var.estado == 'FINALIZADO'}" action="#{administracionInstalacionesController.redirectToFormInstalacion(var,true,false,false)}"/>
+                        <p:commandButton id="idVerReporte" icon="ui-icon-search" action="#{administracionInstalacionesController.redirectToFormInstalacion(var,false,true,false)}"/>
+                        <p:commandButton id="idpdf" ajax="false" icon="ui-icon-arrowthickstop-1-s" actionListener="#{administracionInstalacionesController.PDF(var)}"/>
+                        <p:tooltip for="idEditar" value="Editar Reporte"/>
+                        <p:tooltip for="idVerReporte" value="Ver Reporte"/>
+                        <p:tooltip for="idpdf" value="Descargar Reporte"/>
+                    </div>
+                </p:column>
+
+                <p:column headerText="Gestión estado"  width="150" sortBy="#{var.estado}" filterBy="#{var.estado}" visible="#{administracionInstalacionesController.consultasBean.gestionEstadoReporte}" filterMatchMode="exact">
+                    <f:facet name="filter">                        
+                        <p:selectOneMenu onchange="PF('reportewv').filter()" autoWidth="true" >
+                            <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{consultasBean.estadosReporte}" />
+                        </p:selectOneMenu>                        
+                    </f:facet>
+
+
+                    <div class="ui-fluid">
+                        <p:selectOneMenu label="Seleccionar" value="#{var.estado}" >
+                            <p:ajax listener="#{administracionInstalacionesController.onEstadoChange(var)}" />
+                            <f:selectItems value="#{administracionInstalacionesController.consultasBean.estadosReporte}" />
+                        </p:selectOneMenu>
+                    </div>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+
+
+</ui:composition>

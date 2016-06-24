@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditProductos" prependId="false">   
+            <p:focus context="formEditProductos"/>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+
+                    <p:outputLabel for="categoria" value="Categoria:"/>
+                    <p:selectOneMenu id="categoria" value="#{productoController.productoBean.idCategoria}" 
+                                     filter="true" filterMatchMode="contains" required="true"
+                                     autoWidth="true" appendTo="@this"
+                                     requiredMessage="La categoría es campo obligatorio">
+                        <f:selectItem itemLabel=" Seleccione " itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{productoController.productoBean.listCategorias}" var="categoria"
+                                       itemLabel="#{categoria.nombre}" itemValue="#{categoria.id}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel for="nombreMarcaProducto" value="Marca:"/>
+                    <p:selectOneMenu id="nombreMarcaProducto" value="#{productoController.productoBean.idMarca}" 
+                                     filter="true" filterMatchMode="contains" required="true"
+                                     autoWidth="true" appendTo="@this"
+                                     requiredMessage="La marca es campo obligatorio">
+                        <f:selectItem itemLabel=" Seleccione " itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{productoController.productoBean.listMarcas}" var="marca"
+                                       itemLabel="#{marca.marca}" itemValue="#{marca.id}"/>
+                        <p:ajax listener="#{productoController.cargarModelosByIdMarca()}" update="nombreModeloProducto"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="nombreModeloProducto" value="Modelo:"/>
+                    <p:selectOneMenu id="nombreModeloProducto" value="#{productoController.productoBean.idModelo}" 
+                                     filter="true" filterMatchMode="contains" required="true"
+                                     autoWidth="true" appendTo="@this"
+                                     requiredMessage="El modelo es campo obligatorio">
+                        <f:selectItem itemLabel=" Seleccione " itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{productoController.productoBean.listModelos}" var="modelo"
+                                       itemLabel="#{modelo.modelo}" itemValue="#{modelo.id}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="firmwareProducto" value="Firmware:"/>
+                    <p:inputText id="firmwareProducto" value="#{productoController.productoBean.producto.versionFirmware}"/>
+
+                    <p:outputLabel for="campo1Producto" value="Campo1:"/>
+                    <p:inputText id="campo1Producto" value="#{productoController.productoBean.producto.campo1}"/>
+
+                    <p:outputLabel for="campo2Producto" value="Campo2:"/>
+                    <p:inputText id="campo2Producto" value="#{productoController.productoBean.producto.campo2}"/>
+
+                    <p:outputLabel for="descripcionModelo" value="Descripción:"/>
+                    <p:inputTextarea id="descripcionModelo" value="#{productoController.productoBean.producto.descripcion}"/>
+
+                    <p:outputLabel for="estadoModelo" value="Estado:"/>
+                    <p:selectOneRadio id="estadoModelo" value="#{productoController.productoBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                        <f:selectItems value="#{productoController.productoBean.listEstados}" var="estado" 
+                                       itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                    </p:selectOneRadio>
+
+                </p:panelGrid>
+            </div>
+            <p:separator/>
+            <div align="center">
+                <p:commandButton update="tblProductos, @form" value="Guardar" actionListener="#{productoController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{productoController.cerrarDialog()}" immediate="true"/>
+            </div>
+
+        </h:form>   
+
+    </h:body>
+
+</html>

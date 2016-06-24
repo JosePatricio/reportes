@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Force update dependencies</actionName>
+            <displayName>Force update dependencies</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-U</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-run</actionName>
+            <displayName>run</displayName>
+            <goals>
+                <goal>tomcat7:run</goal>
+            </goals>
+        </action>
+    </actions>

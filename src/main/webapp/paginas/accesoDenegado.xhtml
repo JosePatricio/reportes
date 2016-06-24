@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="ui-fluid" align="center">
+            <img src="/reporte/resources/images/accesssDenied.jpg" alt=""/>                    
+
+            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
+                <p align="center" style="color: #555; font-weight: bold">No tiene los permisos necesarios para acceder al recurso solicitado.<br/>
+                    <br/>Contáctese con el administrador del sistema.</p>
+            </p:panelGrid>
+
+        </div>
+
+    </ui:define>
+
+
+
+</ui:composition>

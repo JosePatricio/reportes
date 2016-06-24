@@ -1,0 +1,855 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+
+        <title>Form</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <h:outputStylesheet library="css" name="css.css"  />
+        <h:outputStylesheet library="css" name="cssEmptyFields.css"/>
+
+        <h:outputScript name="calendar_es.js" library="js" />
+        <h:outputScript name="js.js" library="js" />
+
+
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
+
+        <script type="text/javascript">
+
+            function contador1() {
+                calcularContadorImpresionReal('contadorTotalAnterior', 'contadorTotalActual', 'idImpresionRealTotal');
+
+            }
+            function contador2() {
+                calcularContadorImpresionReal('contadorColorAnterior', 'cfontadorColorActual', 'idImpresionRealColor');
+
+            }
+            function contador3() {
+                calcularContadorImpresionReal('contadorBnAnterior', 'contadorBnActual', 'idImpresionRealBN');
+            }
+
+
+
+            function contadorTemporal1() {
+                calcularContadorImpresionReal('contadorTotalAnteriorTemporal', 'contadorTotalActualTemporal', 'idImpresionRealTotalTemporal');
+
+            }
+            function contadorTemporal2() {
+                calcularContadorImpresionReal('contadorColorAnteriorTemporal', 'contadorColorActualTemporal', 'idImpresionRealColorTemporal');
+
+            }
+            function contadorTemporal3() {
+                calcularContadorImpresionReal('contadorBnAnteriorTemporal', 'contadorBnActualTemporal', 'idImpresionRealBNTemporal');
+            }
+
+
+
+        </script>
+
+    </h:head>
+    <h:body>
+
+
+        <div class="modal fade" id="dlgFiltros" tabindex="-1" role="dialog"
+             aria-labelledby="dlgFiltrosLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgFiltrosLabel">
+                            Filtros
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formEditssss" prependId="false">
+                            <p:growl autoUpdate="true"/>
+                            <p:outputPanel id="group">
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                        <p:outputLabel for="idFiltroSerial" value="Serial:"/>
+                                        <p:inputText id="idFiltroSerial" placeholder="Serial" value="#{instalacionController.reporteBean.filtroSerial}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                        <p:outputLabel for="idFiltroCedula" value="Cédula:"/>
+                                        <p:inputText id="idFiltroCedula" type="number" styleClass="form-control" placeholder="Cédula" value="#{instalacionController.reporteBean.filtroCedula}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                        <p:outputLabel for="idFiltroProducto" value="Producto:"/>
+                                        <p:inputText id="idFiltroProducto" styleClass="form-control" placeholder="Producto" value="#{instalacionController.reporteBean.filtroProducto}">
+                                            <p:ajax />
+                                        </p:inputText>
+
+
+                                    </p:panelGrid>
+                                </div> 
+                                <p:separator/>
+                                <div align="center">
+                                    <p:commandButton styleClass="btn btn-default" update="form" value="Buscar" process="@this" actionListener="#{instalacionController.llenarCamposPorFiltro}"/>
+
+                                    <p:commandButton styleClass="btn btn-default" value="Cerrar" onclick="$('#dlgFiltros').modal('hide');"/>
+
+                                </div>
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="dlgClientes" tabindex="-1" role="dialog"
+             aria-labelledby="dlgClientesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgClientesLabel">
+                            Clientes
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formClientes" prependId="false">
+                            <p:outputPanel >
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-12" layout="grid" >
+
+
+                                        <p:dataTable id="dtClientes" widgetVar="clienteswv" var="var"  value="#{instalacionController.reporteBean.listCliente}"
+                                                     rows="5" reflow="true" rowKey="#{var.id}" paginator="true" paginatorPosition="bottom" 
+                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                     selectionMode="single" selection="#{instalacionController.clienteBean.clienteSelected}"
+                                                     emptyMessage="No se encontró registros">
+
+
+                                            <p:ajax event="rowDblselect" listener="#{instalacionController.rowDblselectClientes}" update="idCliente,idClienteTelefono,idClienteDireccion,idruc,idUsuarioMail" />
+                                            <f:facet name="header">
+                                                <p:outputPanel>
+                                                    <h:outputText value="Buscar :" />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('clienteswv').filter()" style="width:150px" placeholder="Ingresar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+
+                                            <p:column headerText="RUC" sortBy="#{var.ruc}" filterBy="#{var.ruc}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.ruc}" />
+                                            </p:column>
+
+                                            <p:column headerText="Cliente" sortBy="#{var.cliente}" filterBy="#{var.cliente}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.cliente}" />
+                                            </p:column>
+
+                                            <p:column headerText="Correo" sortBy="#{var.email}" filterBy="#{var.email}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.email}" />
+                                            </p:column>
+
+                                            <p:column headerText="Telefono" sortBy="#{var.telefono}" filterBy="#{var.telefono}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.telefono}" />
+                                            </p:column>
+
+                                            <p:column headerText="Dirección" sortBy="#{var.direccion}" filterBy="#{var.direccion}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.direccion}" />
+                                            </p:column>
+
+                                            <p:column headerText="Prioridad" sortBy="#{var.prioridad}" >
+                                                <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(var.prioridad)}">
+                                                    #{sesionController.getNamePrioridad(var.prioridad)}</span>
+                                            </p:column>
+
+                                            <p:column  width="50">
+                                                <p:commandButton id="idbtnver"  icon="ui-icon-search" title="View" update="idCliente,idClienteTelefono,idClienteDireccion,idruc,idUsuarioMail" process="@this" 
+                                                                 actionListener="#{instalacionController.seleccionarDialogCliente(var)}" />
+
+                                                <p:tooltip for="idbtnver" value="Seleccionar"/>
+
+                                            </p:column>
+
+                                        </p:dataTable>
+
+
+                                    </p:panelGrid>
+                                </div> 
+
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="dlgProductos" tabindex="-1" role="dialog"
+             aria-labelledby="dlgProductosLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgProductosLabel">
+                            Productos
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <h:form id="formProductos" prependId="false">
+                            <p:outputPanel >
+                                <div class="ui-fluid">
+                                    <p:panelGrid columns="2" columnClasses="ui-grid-col-12" layout="grid" >
+                                        <p:dataTable id="dtProductos" widgetVar="productoswv" value="#{instalacionController.reporteBean.listProducto}" var="var" reflow="true"
+                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                     rowsPerPageTemplate="5,10,15" rows="10" paginator="true" rowKey="#{var.id}" selectionMode="single" selection="#{instalacionController.reporteBean.productoSelected}"
+                                                     >
+                                            <p:ajax event="rowDblselect" listener="#{instalacionController.rowDblselectProducto}"  />
+
+                                            <f:facet name="header">
+                                                <p:outputPanel>
+                                                    <h:outputText value="Buscar :" />
+                                                    <p:inputText id="globalFilter" onkeyup="PF('productoswv').filter()" style="width:150px" placeholder="Ingresar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column filterBy="#{var.idModelo.idMarca.marca}" headerText="Marca"  filterMatchMode="contains">
+                                                <h:outputText value="#{var.idModelo.idMarca.marca}" />
+                                            </p:column>
+
+
+                                            <p:column filterBy="#{var.idModelo.modelo}" headerText="Modelo" filterMatchMode="contains">
+                                                <h:outputText value="#{var.idModelo.modelo}" />
+                                            </p:column>
+
+
+                                            <p:column headerText="Equipo" sortBy="#{var.equipo}" filterBy="#{var.equipo}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.equipo}" />
+                                            </p:column>
+
+                                            <p:column headerText="Descripción" sortBy="#{var.descripcion}" filterBy="#{var.descripcion}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.descripcion}" />
+                                            </p:column>
+
+                                            <p:column headerText="Firmware" sortBy="#{var.versionFirmware}" filterBy="#{var.versionFirmware}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.versionFirmware}" />
+                                            </p:column>
+
+                                            <p:column headerText="" sortBy="#{var.campo1}" filterBy="#{var.campo1}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.campo1}" />
+                                            </p:column>
+
+                                            <p:column headerText="" sortBy="#{var.campo2}" filterBy="#{var.campo2}" filterMatchMode="contains">
+                                                <h:outputText value="#{var.campo2}" />
+                                            </p:column>
+
+                                            <p:column  width="50">
+                                                <p:commandButton id="idbtnverProducto" update="idEquipo,idMarca,idModelo,idFirmware,idCampo1,idCampo2"  icon="ui-icon-search" title="View" process="@this" immediate="true"
+                                                                 actionListener="#{instalacionController.seleccionarDialogProducto(var)}" />
+
+                                                <p:tooltip for="idbtnverProducto" value="Seleccionar"/>
+
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                    </p:panelGrid>
+                                </div> 
+
+                            </p:outputPanel>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <h:form id="form" prependId="false">
+
+            <p:growl id="mensaje" autoUpdate="true" showSummary="false" showDetail="true" />
+
+
+            <p:panelGrid id="idPanelGridFormulario" columns="4" styleClass="ui-panelgrid-blank" style="width: 100%">
+                <p:focus context="idPanelGridFormulario" />
+
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">                    
+                    <img src="../../resources/images/InnovacionesLogo.png" alt=""/>
+                </p:panelGrid>
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                    <div align="center">
+
+                        <h3>QUITO - GUAYAQUIL - CUENCA</h3><br/>
+                        e-mail: soporte.quito@innovaciones.ec<br/><br/>
+                        Av. Atahualpa Oe 3-109 y Pje. Orbigny &#8226; E-MAIL: soporte.quito@innovaciones.ec &#8226; Quito - ECUADOR
+                    </div>
+                </p:panelGrid>
+
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                    <h1>INSTALACIÓN TEMPORAL</h1>
+                    <h1>N° #{instalacionController.reporteBean.reporteActual}</h1>
+                </p:panelGrid>
+
+            </p:panelGrid>
+
+
+
+
+
+            <p:panelGrid style="width: 100%">
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="4">CÓDIGO 
+                        #{instalacionController.reporteBean.usuarios.codigo}
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="4">Fecha: 
+                        <p:outputLabel value="#{instalacionController.reporteBean.reporte.fecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="date" />
+                        </p:outputLabel>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8"><div align="center">DATOS GENERALES</div></p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Empresa/Cliente:  </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="idCliente" required="true" requiredMessage="Campo Empresa/Cliente Requerido" style="width: 100%;" value="#{clienteBean.cliente.cliente}"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:commandButton update=":formClientes:dtClientes" process="@this" icon="fa fa-search" style="height: 20px" actionListener="#{instalacionController.abrirDialogClientes}"/>
+
+                    </p:column>
+
+
+
+                    <p:column style="font-weight: bold;" colspan="1">No. RUC:</p:column>
+                    <p:column colspan="2"> 
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                            <p:inputText id="idruc" required="true" requiredMessage="Campo Ruc Requerido" type="number" style="width: 90%" maxlength="20" validatorMessage="Inválido" value="#{clienteBean.cliente.ruc}"><p:ajax/></p:inputText>
+                            <p:commandButton update="idCliente,idClienteTelefono,idClienteDireccion" icon="fa fa-search" process="@this" style="height: 20px" actionListener="#{instalacionController.llenarClientePorRuc}"/>
+                        </p:panelGrid>
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Atención: </p:column>
+                    <p:column colspan="2"> 
+                        <p:inputText style="width: 90%" required="true" requiredMessage="Campo Atención Requerido" value="#{reporteBean.productoClienteReporte.atencion}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1">
+                        <div align="right">
+                            Teléfono:  
+                        </div>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idClienteTelefono"  value="#{clienteBean.cliente.telefono}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1">
+                        <div align="right">
+                            Teléfono 2:  
+                        </div>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idClienteTelefono2"  value="#{clienteBean.cliente.telefono2}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">Direcci&ograve;n: </p:column>
+                    <p:column colspan="2"> 
+                        <p:inputText id="idClienteDireccion" required="true" requiredMessage="Campo Dirección Requerido"  style="width: 90%" value="#{clienteBean.cliente.direccion}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="1"><div align="right">Factura #: </div></p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText  required="true" requiredMessage="Campo Factura# Requerido"  value="#{reporteBean.reporte.factura}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="1"><div align="right">Referencia:</div> </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText  value="#{reporteBean.reporte.referencia}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+
+                    <p:column style="font-weight: bold;" colspan="1" > Ciudad: </p:column>
+                    <p:column  colspan="2">
+                        <p:inputText style="width: 90%" value="#{reporteBean.productoClienteReporte.ciudad}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="1" > <div align="right">Correo:</div> </p:column>
+                    <p:column style="font-weight: bold;" colspan="2" >
+                        <p:inputText id="idUsuarioMail" required="true" requiredMessage="Campo Email Requerido"  value="#{clienteBean.cliente.email}" style="width: 50%;"  styleClass="textoNormal"><p:ajax/></p:inputText>
+                    </p:column>
+                    
+                      <p:column style="font-weight: bold;" colspan="1" >  </p:column>
+                        <p:column style="font-weight: bold;" colspan="1" >  </p:column>
+                    
+                    
+                </p:row>
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold; background: #d9534f" colspan="8">
+                        <div align="center">DATOS DEL EQUIPO A REEMPLAZAR</div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="EQUIPO"/><br/>
+                        <p:inputText id="idEquipo" required="true" requiredMessage="Campo Equipo Requerido" style="width: 70%" value="#{instalacionController.reporteBean.producto.equipo}"><p:ajax/></p:inputText>
+                        <p:commandButton update=":formProductos:dtProductos" icon="fa fa-search" style="height: 20px" process="@this" actionListener="#{instalacionController.abrirDialogProductos('DATOS_REEMPLAZO')}"/>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MARCA"/><br/>
+                        <p:inputText id="idMarca" style="width: 70%" required="true" requiredMessage="Campo Marca Requerido" value="#{instalacionController.reporteBean.marca.marca}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MODELO"/><br/>
+                        <p:inputText id="idModelo" style="width: 70%" required="true" requiredMessage="Campo Modelo Requerido" value="#{instalacionController.reporteBean.modelo.modelo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="SERIE"/><br/>
+                        <p:inputText style="width: 70%" required="true" requiredMessage="Campo serial requerido" styleClass="textoNormal" value="#{instalacionController.reporteBean.productoCliente.serie}"><p:ajax/></p:inputText>
+                        <p:commandButton update=":form" icon="fa fa-search" process="@this" style="height: 20px" actionListener="#{instalacionController.llenarProductoPorSerial('DATOS_REEMPLAZO')}"/>
+
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="# IP"/><br/>
+                        <p:inputText id="idIpMaquina" required="true" requiredMessage="Campo Ip Equipo Requerido"  style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.ipEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="FIRMWARE"/><br/>
+                        <p:inputText id="idFirmware" style="width: 70%" value="#{instalacionController.reporteBean.producto.versionFirmware}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 1"/><br/>
+                        <p:inputText id="idCampo1" style="width: 70%" value="#{instalacionController.reporteBean.producto.campo1}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 2"/><br/>
+                        <p:inputText id="idCampo2" style="width: 70%" value="#{instalacionController.reporteBean.producto.campo2}"><p:ajax/></p:inputText>
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="DEPARTAMENTO"/><br/>
+                        <p:inputText id="idDepartamentoEquipo" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.departamento}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="DIRECCIÓN"/><br/>
+                        <p:inputText id="idDireccionEquipo" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.direccionEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="TELEFONO"/><br/>
+                        <p:inputText id="idTelefonoEquipo" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.telefonoEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="CORREO"/><br/>
+                        <p:inputText id="idCorreoEquipo" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.correoEquipo}" styleClass="textoNormal"><p:ajax/></p:inputText>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1"></p:column>
+                    <p:column colspan="1">Contador Total </p:column>
+                    <p:column colspan="1">Contador Color </p:column>
+                    <p:column colspan="1">Contador B/N </p:column>
+                    <p:column colspan="3" style="font-weight: bold">Observaciones: </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column colspan="1">Anterior</p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorTotalAnterior" onkeyup="contador1();" validatorMessage="Valor no válido" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorTotalAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorColorAnterior" onkeyup="contador2();" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorColorAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorBnAnterior" onkeyup="contador3();" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorBnAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+                    <p:column rowspan="3" colspan="3">
+                        <p:inputTextarea id="observacion" style="width: 100%" value="#{instalacionController.reporteBean.reporte.sintomasEquipo}"><p:ajax/></p:inputTextarea>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">Actual</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorTotalActual"  type="number" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorTotalActual}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorColorActual" type="number" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorColorActual}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorBnActual" type="number"  value="#{instalacionController.reporteBean.productoDetalleReporte.contadorBnActual}"><p:ajax/></p:inputText>
+                    </p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column colspan="1">Impresi&ograve;n Real</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealTotal"   value="#{instalacionController.reporteBean.productoDetalleReporte.contadorTotalImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealColor" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorColorImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1" > 
+                        <p:inputText id="idImpresionRealBN" value="#{instalacionController.reporteBean.productoDetalleReporte.contadorBnImpReal}">
+                        </p:inputText>
+
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold; background: #4cae4c" colspan="8">
+                        <div align="center">DATOS DEL EQUIPO TEMPORAL</div></p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="EQUIPO"/><br/>
+                        <p:inputText id="idEquipoTemporal" required="true" requiredMessage="Campo Equipo Requerido" style="width: 70%" value="#{instalacionController.reporteBean.productoTemporal.equipo}"><p:ajax/></p:inputText>
+
+                        <p:commandButton update=":formProductos:dtProductos" icon="fa fa-search" style="height: 20px" process="@this" actionListener="#{instalacionController.abrirDialogProductos('DATOS_TEMPORAL')}"/>
+
+
+                    </p:column>
+
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MARCA"/><br/>
+                        <p:inputText id="idMarcaTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoTemporal.idModelo.idMarca.marca}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="MODELO"/><br/>
+                        <p:inputText id="idModeloTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoTemporal.idModelo.modelo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="SERIE"/><br/>
+                        <p:inputText style="width: 70%" required="true" requiredMessage="Campo serial requerido" styleClass="textoNormal" value="#{instalacionController.reporteBean.productoClienteTemporal.serie}"><p:ajax/></p:inputText>
+                        <p:commandButton update=":form" icon="fa fa-search" process="@this" style="height: 20px" actionListener="#{instalacionController.llenarProductoPorSerial('DATOS_TEMPORAL')}"/>
+
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="# IP "/><br/>
+                        <p:inputText id="idIpMaquinaTemporal" required="true" requiredMessage="Campo Ip Equipo Requerido"  style="width: 70%" value="#{instalacionController.reporteBean.detalleReporteTemporal.ipEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="FIRMWARE"/><br/>
+                        <p:inputText id="idFirmwareTemporal" style="width: 70%" value="#{instalacionController.reporteBean.producto.versionFirmware}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 1"/><br/>
+                        <p:inputText id="idCampo1Temporal" style="width: 70%" value="#{instalacionController.reporteBean.producto.campo1}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="Campo 2"/><br/>
+                        <p:inputText id="idCampo2Temporal" style="width: 70%" value="#{instalacionController.reporteBean.producto.campo2}"><p:ajax/></p:inputText>
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel  value="DEPARTAMENTO temporal"/><br/>
+                        <p:inputText id="idDepartamentoEquipoTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.departamento}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="DIRECCIÓN"/><br/>
+                        <p:inputText id="idDireccionEquipoTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.direccionEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="TELEFONO"/><br/>
+                        <p:inputText id="idTelefonoEquipoTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.telefonoEquipo}"><p:ajax/></p:inputText>
+                    </p:column>
+
+                    <p:column style="font-weight: bold;" colspan="2">
+                        <p:outputLabel value="CORREO"/><br/>
+                        <p:inputText id="idCorreoEquipoTemporal" style="width: 70%" value="#{instalacionController.reporteBean.productoClienteReporte.correoEquipo}" styleClass="textoNormal"><p:ajax/></p:inputText>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1"></p:column>
+                    <p:column colspan="1">Contador Total </p:column>
+                    <p:column colspan="1">Contador Color </p:column>
+                    <p:column colspan="1">Contador B/N </p:column>
+                    <p:column colspan="1" style="font-weight: bold">Observaciones: </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column colspan="1">Anterior</p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorTotalAnteriorTemporal" onkeyup="contadorTemporal1();" validatorMessage="Valor no válido" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorTotalAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorColorAnteriorTemporal" onkeyup="contadorTemporal2();" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorColorAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1"> 
+                        <p:inputText type="number" id="contadorBnAnteriorTemporal" onkeyup="contadorTemporal3();" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorBnAnterior}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+                    <p:column rowspan="3" colspan="3">
+                        <p:inputTextarea id="observacionTemporal" style="width: 100%" value="#{instalacionController.reporteBean.detalleReporteTemporal.observaciones}"><p:ajax/></p:inputTextarea>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">Actual</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorTotalActualTemporal"  type="number" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorTotalActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorColorActualTemporal" type="number" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorColorActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="contadorBnActualTemporal" type="number"  value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorBnActual}"><p:ajax/></p:inputText>
+
+                    </p:column>
+                </p:row>
+
+
+
+
+                <p:row>
+                    <p:column colspan="1">Impresi&ograve;n Real</p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealTotalTemporal"   value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorTotalImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="idImpresionRealColorTemporal" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorColorImpReal}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column colspan="1" > 
+                        <p:inputText id="idImpresionRealBNTemporal" value="#{instalacionController.reporteBean.detalleReporteTemporal.contadorBnImpReal}">
+                        </p:inputText>
+
+                    </p:column>
+                </p:row>
+
+
+
+
+
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">MEDICIONES ELÉCTRICAS</div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">FASE-NEUTRO:</p:column>
+                    <p:column style="font-weight: bold;" colspan="7"><p:inputText style="width: 100%" value="#{instalacionController.detalleReporteInstalacionNuevaBean.detalleReporteInstalacionNueva.faseNeutro}"><p:ajax/></p:inputText></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">FASE-TIERRA:</p:column>
+                    <p:column style="font-weight: bold;" colspan="7"><p:inputText style="width: 100%" value="#{instalacionController.detalleReporteInstalacionNuevaBean.detalleReporteInstalacionNueva.faseTierra}"><p:ajax/></p:inputText></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">NEUTRO:</p:column>
+                    <p:column style="font-weight: bold;" colspan="7"><p:inputText style="width: 100%" value="#{instalacionController.detalleReporteInstalacionNuevaBean.detalleReporteInstalacionNueva.neutro}"><p:ajax/></p:inputText></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;" colspan="1">OBSERVACIÓN:</p:column>
+                    <p:column style="font-weight: bold;" colspan="7"><p:inputText style="width: 100%" value="#{instalacionController.detalleReporteInstalacionNuevaBean.detalleReporteInstalacionNueva.observacion}"><p:ajax/></p:inputText></p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">OBSERVACIONES / RECOMENDACIONES </div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="8">
+                        <p:inputTextarea style="width: 100%" value="#{instalacionController.reporteBean.reporte.observacionesRecomendaciones}">
+                            <p:ajax/>
+                        </p:inputTextarea>
+                    </p:column>
+                </p:row>
+
+
+
+                <p:row>
+                    <p:column styleClass="ui-widget-header" style="font-weight: bold;" colspan="8">
+                        <div align="center">EXCLUSIVO PARA EL CLIENTE </div></p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="4">
+                        HORA DE INICIO:    <p:calendar pattern="HH:mm" timeOnly="true" locale="es" label="HORA DE INICIO" value="#{instalacionController.reporteBean.reporte.horaInicio}"/>
+                    </p:column>
+                    <p:column colspan="4">
+                        HORA DE FINALIZACION   <p:calendar pattern="HH:mm" timeOnly="true" locale="es" label="HORA DE FINALIZACION" value="#{instalacionController.reporteBean.reporte.horaFin}"/>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="4">
+                        <div align="center">
+                            <p:signature id="signatureTecnico"  style="width:400px;height:200px"  value="#{instalacionController.reporteBean.usuarios.firma}"   guideline="true" 
+                                         base64Value="#{instalacionController.reporteBean.usuarios.firmaBase64}" readonly="true"/>
+
+                            <br/>
+                            <p:outputLabel value="Firma Ing. de Soporte"/>
+                        </div><br/>
+                        <p:outputLabel value="NOMBRE:" />
+                        &nbsp;
+                        <p:outputLabel value=" #{instalacionController.reporteBean.usuarios.nombreCompleto}"/>
+                    </p:column>
+
+
+                    <p:column colspan="4">
+                        <p:commandButton value="Limpiar" icon="ui-icon-close" type="button" onclick="limpiarFirmaCliente();"  />
+                        <br/>                        
+                        <p:commandButton value="Guardar" icon="fa fa-save" process="@this" onclick="deshabilitarFirmaCliente();" />
+                        <div id="idDivFirma" align="center">
+                            <p:signature id="signatureCliente" style="width:400px;height:200px; pointer-events: " widgetVar="sig2" value="#{instalacionController.reporteBean.reporte.firmaCliente}" guideline="true" 
+                                         base64Value="#{instalacionController.reporteBean.reporte.firmaClienteBase64}" readonly="#{instalacionController.reporteBean.estadoFirma}"/>
+
+                            <br/>
+                            <p:outputLabel value="Firma y Sello Cliente"/>
+                        </div><br/>
+                        <p:outputLabel value="NOMBRE:" />
+                        &nbsp;
+                        <p:inputText style="width: 80%" value="#{instalacionController.reporteBean.reporte.nombreCliente}"><p:ajax/></p:inputText>
+
+                    </p:column>
+
+                </p:row>
+
+
+
+            </p:panelGrid>
+
+
+            <br/>
+            <div align="center">
+
+
+                <p:panelGrid styleClass="ui-panelgrid-blank">
+                    <p:row> 
+                        <p:column colspan="1">
+                            <p:commandButton value="Guardar" actionListener="#{instalacionController.guardar}" update="form:mensaje"  disabled="#{instalacionController.sesionController.sesionBean.isReporteVer}" ajax="false"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:commandButton value="Cancelar" actionListener="#{instalacionController.cancelar}" process="@this" update="form" />
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:commandButton rendered="#{instalacionController.reporteBean.disable}" ajax="false" icon="fa fa-file-pdf-o" id="botonpdf" value="PDF" actionListener="#{instalacionController.PDF()}"/>
+
+                        </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+
+            </div>
+
+            <br/>
+        </h:form>
+
+
+
+
+
+
+    </h:body>
+</html>
+

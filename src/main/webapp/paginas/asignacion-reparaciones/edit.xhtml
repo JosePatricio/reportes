@@ -1,0 +1,309 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD X
+    HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <script type="text/javascript">
+            function alert(value)
+            {
+                console.log(value);
+                
+                $('.ui-datatable-header').css('background','');
+                $('.ui-widget-header').css('background','');
+            }
+        </script>
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditAsignacionReparaciones" prependId="false">   
+            <p:growl id="growlAsignacionReparaciones" autoUpdate="true" showDetail="true"/>
+            <p:focus context="formEditAsignacionReparaciones"/>
+            <div class="ui-fluid">
+                <p:tabView id="tabSeleccion" activeIndex="#{asignacionReparacionController.asignacionReparacionBean.indiceTabView}" dynamic="true" cache="false"
+                           onTabChange="#{asignacionReparacionController.cambiarColorPorPrioridad()}">
+
+                    <p:tab id="tabTecnicos" title="Técnicos">
+                        <p:dataTable id="tblTecnicos" widgetVar="wtblTecnicos" var="tecnico"  value="#{asignacionReparacionController.asignacionReparacionBean.listUsuarios}"
+                                     rows="3" reflow="true" rowKey="#{tecnico.id}" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     selectionMode="single" selection="#{asignacionReparacionController.asignacionReparacionBean.usuarioSelected}"
+                                     emptyMessage="No se encontró registros">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: " />
+                                    <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblClientes').filter()"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:ajax event="rowDblselect" process="@this" listener="#{asignacionReparacionController.seleccionarTecnico}"/>
+                            
+                            <p:column headerText="Ruc" sortBy="#{tecnico.dni}" filterBy="#{cliente.dni}" 
+                                      filterMatchMode="contains" width="110">
+                                <h:outputText value="#{tecnico.dni}" />
+                            </p:column>
+
+                            <p:column headerText="Cliente" sortBy="#{tecnico.nombreCompleto}" filterBy="#{tecnico.nombreCompleto}" filterMatchMode="contains">
+                                <h:outputText value="#{tecnico.nombreCompleto}" />
+                            </p:column>
+
+                            <p:column headerText="E-mail" sortBy="#{tecnico.celular}" filterBy="#{tecnico.celular}" filterMatchMode="contains">
+                                <h:outputText value="#{tecnico.celular}" />
+                            </p:column>
+
+                            <p:column  width="50" >
+                                <p:commandButton id="idSeleccionarTecnico" process="@this"                                             
+                                                 actionListener="#{asignacionReparacionController.seleccionarTecnico(tecnico)}"
+                                                 icon="fa fa-fw fa-check" title="Seleccionar" />
+                                <p:tooltip for="idSeleccionarTecnico" value="Seleccionar"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+
+                    <p:tab id="tabClientes" title="Clientes">
+                        <p:dataTable id="tblClientes" widgetVar="wtblClientes" var="cliente"  value="#{asignacionReparacionController.asignacionReparacionBean.listClientes}"
+                                     rows="3" reflow="true" rowKey="#{cliente.id}" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     selectionMode="single" selection="#{asignacionReparacionController.asignacionReparacionBean.clienteSelected}"
+                                     emptyMessage="No se encontró registros">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: " />
+                                    <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblClientes').filter()"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:ajax event="rowDblselect" process="@this" listener="#{asignacionReparacionController.seleccionarCliente}"/>
+                            
+                            <p:column headerText="Ruc" sortBy="#{cliente.ruc}" filterBy="#{cliente.ruc}" 
+                                      filterMatchMode="contains" width="110">
+                                <h:outputText value="#{cliente.ruc}" />
+                            </p:column>
+
+                            <p:column headerText="Cliente" sortBy="#{cliente.cliente}" filterBy="#{cliente.cliente}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.cliente}" />
+                            </p:column>
+
+                            <p:column headerText="E-mail" sortBy="#{cliente.email}" filterBy="#{cliente.email}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.email}" />
+                            </p:column>
+
+                            <p:column  width="50" >
+                                <p:commandButton id="idSeleccionarCliente" process="@this"                                             
+                                                 actionListener="#{asignacionReparacionController.seleccionarCliente(cliente)}"
+                                                 icon="fa fa-fw fa-check" title="Seleccionar" />
+                                <p:tooltip for="idSeleccionarCliente" value="Seleccionar"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab id="tabProductos" title="Productos">
+                        <p:dataTable id="tblProductos" widgetVar="wtblProductos" var="productoCliente"  value="#{asignacionReparacionController.asignacionReparacionBean.listProductoClientes}"
+                                     rows="3" reflow="true" rowKey="#{productoCliente.id}" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     selectionMode="single" selection="#{asignacionReparacionController.asignacionReparacionBean.productoClienteSelected}"
+                                     emptyMessage="No se encontró registros">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar: " />
+                                    <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblProductos').filter()"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            
+                            <p:ajax event="rowDblselect" process="@this" listener="#{asignacionReparacionController.seleccionarProductoCliente}"/>
+
+                            <p:column headerText="Marca" sortBy="#{ productoCliente.idProducto.idModelo.idMarca.marca}" filterBy="#{productoCliente.idProducto.idModelo.idMarca.marca}" filterMatchMode="contains">
+                                <h:outputText value="#{productoCliente.idProducto.idModelo.idMarca.marca}" />
+                            </p:column>
+
+                            <p:column headerText="Modelo" sortBy="#{producto.idModelo.modelo}" filterBy="#{productoCliente.idProducto.idModelo.modelo}" filterMatchMode="contains">
+                                <h:outputText value="#{productoCliente.idProducto.idModelo.modelo}" />
+                            </p:column>
+
+                            <p:column headerText="Equipo" sortBy="#{productoCliente.idProducto.equipo}" filterBy="#{productoCliente.idProducto.equipo}" filterMatchMode="contains">
+                                <h:outputText value="#{productoCliente.idProducto.equipo}" />
+                            </p:column>
+
+                            <p:column headerText="Serie" sortBy="#{productoCliente.serie}" filterBy="#{productoCliente.serie}" filterMatchMode="contains">
+                                <h:outputText value="#{productoCliente.serie}" />
+                            </p:column>
+
+                            <p:column  width="50" >
+                                <p:commandButton id="idSeleccionarProducto" process="@this"
+                                                 actionListener="#{asignacionReparacionController.seleccionarProductoCliente(productoCliente)}"
+                                                 icon="fa fa-fw fa-check" title="Seleccionar" />
+                                <p:tooltip for="idSeleccionarProducto" value="Seleccionar"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab id="tabObservacion" title="Observación">
+                        <p:inputTextarea value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.observacion}"/>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <p:outputPanel id="opSeleccion">
+
+                <div class="ui-fluid">
+                    <p:panel header="Datos Seleccionados">
+                        <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-10,ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:outputLabel for="rucTecnicoSeleccionado" value="C.I.:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="rucTecnicoSeleccionado"
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.usuarioSelected.dni}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="nombreTecnicoSeleccionado" value="Técnico:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="nombreTecnicoSeleccionado"
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.usuarioSelected.nombreCompleto}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="rucClienteSeleccionado" value="Ruc:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="rucClienteSeleccionado"
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.clienteSelected.ruc}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="clienteSeleccionado" value="Cliente:" 
+
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+                            <p:outputLabel id="clienteSeleccionado"
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.clienteSelected.cliente}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="marcaProductoSeleccionado" value="Marca:" 
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+
+                            <p:outputLabel id="marcaProductoSeleccionado" 
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.productoClienteSelected.idProducto.idModelo.idMarca.marca}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="modeloProductoSeleccionado" value="Modelo:" 
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+
+                            <p:outputLabel id="modeloProductoSeleccionado" 
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.productoClienteSelected.idProducto.idModelo.modelo}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="equipoSeleccionado" value="Equipo:" 
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+
+                            <p:outputLabel id="equipoSeleccionado" 
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.productoClienteSelected.idProducto.equipo}" style="font-size: 12px !important;"/>
+
+                            <p:outputLabel for="equipoSerie" value="Serie:" 
+                                           style="font-weight: bold; font-size: 12px !important;"/>
+
+                            <p:outputLabel id="equipoSerie" 
+                                           value="#{asignacionReparacionController.asignacionReparacionBean.productoClienteSelected.serie}" style="font-size: 12px !important;"/>
+
+                        </p:panelGrid>     
+
+                    </p:panel>
+                    <br/>
+                    <p:panel header="Fechas de Reparación">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:outputLabel for="calFechaIniReparacion" value="Fecha Inicio:" style="font-weight: bold; font-size: 12px !important;"/>
+                                <p:calendar id="calFechaIniReparacion" required="true" requiredMessage="El campo fecha inicio es obligatorio"
+                                            locale="es" style="font-size: 13px !important;" pattern="yyyy-MM-dd"
+                                            mindate="#{asignacionReparacionController.asignacionReparacionBean.fechaInicial}"
+                                            value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.fechaInicioAtencion}">
+                                    <p:ajax listener="#{asignacionReparacionController.actualizarFechaFinal}" 
+                                            event="dateSelect" update=":formEditAsignacionReparaciones:calFechaFinReparacion"/>
+                                </p:calendar>
+
+                                <p:outputLabel for="calHoraInicioReparacion" value="Hora Inicio" style="font-weight: bold; font-size: 12px !important;"/>
+                                <p:calendar id="calHoraInicioReparacion" required="true" requiredMessage="El campo hora inicio es obligatorio"
+                                            pattern="HH:mm" timeOnly="true" locale="es" 
+                                            minHour="08" maxHour="17"                                             
+                                            style="font-size: 13px !important;"
+                                            value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.horaInicioAtencion}">
+
+                                    <p:ajax listener="#{asignacionReparacionController.actualizarHoraFinal}" 
+                                            event="dateSelect" update=":formEditAsignacionReparaciones:calHoraFinReparacion"/>
+                                </p:calendar>
+
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:outputLabel for="calFechaFinReparacion" value="Fecha Fin:" style="font-weight: bold; font-size: 12px !important;"/>
+                                <p:calendar id="calFechaFinReparacion" 
+                                            locale="es" style="font-size: 13px !important;" required="true" requiredMessage="El campo fecha fin es obligatorio"
+                                            mindate="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.fechaInicioAtencion}"
+                                            value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.fechaFinAtencion}" pattern="yyyy-MM-dd"/>
+
+                                <p:outputLabel for="calHoraFinReparacion" value="Hora Fin:" style="font-weight: bold; font-size: 12px !important;"/>
+                                <p:calendar id="calHoraFinReparacion" required="true" requiredMessage="El campo hora fin es obligatorio"
+                                            pattern="HH:mm" timeOnly="true" locale="es" 
+                                            minHour="08" maxHour="17"                                             
+                                            style="font-size: 13px !important;"                                            
+                                            value="#{asignacionReparacionController.asignacionReparacionBean.asignacionReparacion.horaFinAtencion}"/>
+                            </p:panelGrid>
+
+                            <p:watermark for="calFechaFinReparacion" value="dd-mm-yyyy"/>
+                            <p:watermark for="calHoraFinReparacion" value="hh:ss"/>
+
+                        </p:panelGrid>
+                    </p:panel>
+
+                    <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
+
+                        <p:outputLabel value="Prioridad:" />
+                        <p:selectOneMenu value="#{asignacionReparacionController.asignacionReparacionBean.prioridad}" appendTo="@this"
+                                         required="true" filter="true" requiredMessage="El campo prioridad es obligatorio"
+                                         onchange="alert(this.value);">
+                            <f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+                            <f:selectItems value="#{asignacionReparacionController.asignacionReparacionBean.listPrioridades}" var="prioridad"
+                                           itemLabel="#{prioridad.propertyName}" itemValue="#{prioridad.value}"
+                                           />
+                            <p:ajax event="change" update="@this" listener="#{asignacionReparacionController.cambiarColorPorPrioridad()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Tipo Reporte:" />
+                        <p:selectOneMenu value="#{asignacionReparacionController.asignacionReparacionBean.tipoReporteSelected}" appendTo="@this"
+                                         required="true" filter="true" requiredMessage="El campo tipo reporte es obligatorio">
+                            <f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+                            <f:selectItems value="#{asignacionReparacionController.asignacionReparacionBean.tiposReporte}" var="tipoReporte"
+                                           itemLabel="#{tipoReporte.propertyName}" itemValue="#{tipoReporte.value}"/>
+                        </p:selectOneMenu>
+
+                        <!--                        <p:outputLabel for="estadoModelo" value="Estado:" style="font-weight: bold; font-size: 12px !important;"/>
+                                                <p:selectOneRadio id="estadoModelo" value="#{asignacionReparacionController.asignacionReparacionBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                                                    <f:selectItems value="#{asignacionReparacionController.asignacionReparacionBean.listEstados}" var="estado" 
+                                                                   itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                                                </p:selectOneRadio>-->
+                    </p:panelGrid>
+                </div>
+
+                <p:separator/>
+                <div align="center">
+                    <p:commandButton value="Guardar"
+                                     disabled="#{asignacionReparacionController.asignacionReparacionBean.clienteSelected.id eq null or 
+                                                 asignacionReparacionController.asignacionReparacionBean.productoClienteSelected.id eq null or 
+                                                 asignacionReparacionController.asignacionReparacionBean.usuarioSelected.id eq null}"
+                                     actionListener="#{asignacionReparacionController.guardar()}" 
+                                     icon="ui-icon-check"
+                                     update="@form"/>
+                    <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{asignacionReparacionController.cerrarDialog()}" 
+                                     immediate="true"/>
+                </div>
+
+            </p:outputPanel>
+        </h:form>   
+
+    </h:body>
+
+</html>

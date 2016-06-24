@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"            
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="formEditUsuarios" prependId="false">
+
+            <div class="ui-fluid">
+                <p:tabView id="tabViewUsuario" activeIndex="0">
+
+                    <p:tab id="tabDatosUsuario" title="Datos Generales">
+                        <p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5" layout="grid" styleClass="ui-panelgrid-blank">
+
+                            <p:outputLabel for="codigo" value="Código:"/>
+                            <p:inputText id="codigo" value="#{usuariosController.usuarioBean.usuario.codigo}" />
+
+                            <p:outputLabel for="cedula" value="Cédula:"/>
+                            <p:inputText id="cedula" value="#{usuariosController.usuarioBean.usuario.dni}" >
+                                <p:ajax event="blur" update="usuario" listener="#{usuariosController.asignarUsername()}"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="nombre" value="Nombre:"/>
+                            <p:inputText id="nombre" value="#{usuariosController.usuarioBean.usuario.nombre}" />
+
+                            <p:outputLabel for="apellido" value="Apellido:"/>
+                            <p:inputText id="apellido" value="#{usuariosController.usuarioBean.usuario.apellido}" />
+
+                            <p:outputLabel for="mail" value="Correo:"/>
+                            <p:inputText id="mail" style="text-transform: lowercase !important" value="#{usuariosController.usuarioBean.usuario.mail}" 
+                                         validatorMessage="Email inválido">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="direccion" value="Dirección:"/>
+                            <p:inputText id="direccion" value="#{usuariosController.usuarioBean.usuario.direccion}" />
+
+                            <p:outputLabel for="telefono" value="Teléfono:"/>
+                            <p:inputText id="telefono"  value="#{usuariosController.usuarioBean.usuario.telefono}" />
+
+                            <p:outputLabel for="celular" value="Celular:"/>
+                            <p:inputText id="celular" value="#{usuariosController.usuarioBean.usuario.celular}" />
+
+                            <p:outputLabel for="usuario" value="Username:"/>
+                            <p:inputText id="usuario" style="text-transform: none !important" value="#{usuariosController.usuarioBean.usuario.usuario}" />                            
+
+                            <p:outputLabel for="multiple" value="Roles:"/>
+
+                            <p:selectCheckboxMenu id="multiple" label="--Seleccione--" appendTo="@this" 
+                                                  required="true" requiredMessage="Seleccione al menos un rol"
+                                                  value="#{usuariosController.usuarioBean.listIdRolesByUsuario}"
+                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                <f:selectItems value="#{usuariosController.usuarioBean.listRol}" var="var" itemLabel="#{var.descripcion}" itemValue="#{var.id}"/>
+                            </p:selectCheckboxMenu>
+
+                            <h:outputLabel	for="idFile" value="Imagen:" />
+                            <p:fileUpload id="idFile" auto="true"
+                                          fileUploadListener="#{usuariosController.handleFileUpload}"
+                                          mode="advanced" dragDropSupport="true" multiple="true"
+                                          uploadLabel="Subir"
+                                          cancelLabel="Cancelar"
+                                          label="Examinar" 
+                                          sizeLimit="10000000"
+                                          invalidFileMessage="Tipo inválido"
+                                          invalidSizeMessage="Tamaño inválido"
+                                          fileLimitMessage="Límite de archivos inválido"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/i"/>
+
+
+                            <p:outputLabel for="estadoUsuario" value="Estado:"/>
+
+                            <p:selectOneRadio id="estadoUsuario" value="#{usuariosController.usuarioBean.estado}" style="margin-bottom:10px; padding: 5px;">
+                                <f:selectItems value="#{usuariosController.usuarioBean.listEstados}" var="estado" 
+                                               itemLabel="#{estado.propertyName}" itemValue="#{estado.value}"/>
+                            </p:selectOneRadio>
+                        </p:panelGrid>
+
+                        <p:watermark for="mail" value="example@mail.com" />
+                        <p:message for="mail"/>
+                    </p:tab>
+
+                    <p:tab id="tabFirmaUsuario" title="Firma">
+                        <p:outputLabel for="signatureUsuario" value="Firma"/>
+                        <p:panelGrid columns="1">
+                            <p:signature id="signatureUsuario" widgetVar="signatureUsuariow" value="#{usuariosController.usuarioBean.usuario.firma}"
+                                         guideline="true" base64Value="#{usuariosController.usuarioBean.usuario.firmaBase64}"
+                                         style="width: 250px; height: 200px;"/>
+                            <div align="right">
+                                <p:commandButton value="Clear" icon="ui-icon-close" type="button" onclick="PF('signatureUsuariow').clear()"/>
+                            </div>     
+                        </p:panelGrid>
+                    </p:tab>
+
+                    <p:tab id="tabResetearClave" title="Resetear Clave">
+                        <br/>
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="passNuevaClave" value="Nueva Clave:"/>
+                            <p:password id="passNuevaClave" autocomplete="off" value="#{usuariosController.usuarioBean.nuevaClave}" >
+                                <p:ajax event="blur" listener="#{usuariosController.verificarNuevaClave()}"/>
+                            </p:password>
+
+                            <p:outputLabel for="passConfirmarNuevaClave" value="Confirmar Clave:"/>
+                            <p:password id="passConfirmarNuevaClave" autocomplete="off" value="#{usuariosController.usuarioBean.confirmarNuevaClave}" >
+                                <p:ajax event="blur" listener="#{usuariosController.verificarNuevaClave()}"/>
+                            </p:password>
+                            <br/>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+
+            </div>
+            <p:separator/>
+            <div align="center">
+                <p:commandButton value="Guardar" actionListener="#{usuariosController.guardar}" icon="ui-icon-check" update="@form"/>
+                <p:commandButton icon="ui-icon-closethick" value="Cancelar" actionListener="#{usuariosController.cerrarDialog()}" immediate="true"/>
+            </div>
+
+        </h:form>     
+
+    </h:body>
+
+</html>

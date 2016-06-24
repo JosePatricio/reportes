@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:view contentType="text/html">
+        <h:head>
+
+
+<!--<h:outputStylesheet library="themes/primefaces-#{sesionController.sesionBean.themeSelected eq null or sesionController.sesionBean.themeSelected eq '' ? sesionController.sesionBean.themeSelected:'redmond'}" name="theme.css" />--> 
+
+<!--<link src="#{request.contextPath}/resources/themes/#{sesionController.sesionBean.themeSelected}.css" type="text/css"/>-->
+
+
+<!--<link type="text/css" rel="stylesheet" href="#{request.contextPath}/themes/#{sesionController.sesionBean.themeSelected eq null or sesionController.sesionBean.themeSelected eq '' ? sesionController.sesionBean.themeSelected:'redmond'}/skin.css"/>-->
+
+<!--            <link href="/reporte/javax.faces.resource/theme.css.xhtml?ln=primefaces-#{sesionController.sesionBean.themeSelected eq null or sesionController.sesionBean.themeSelected eq '' ? sesionController.sesionBean.themeSelected:'redmond' }" 
+      rel="stylesheet" type="text/css"/>-->
+
+            <!--<link type="text/css" rel="stylesheet" href="/reporte/faces/javax.faces.resource/theme.css?ln=#{sesionController.sesionBean.themeSelected}" />-->
+
+<!--<h:outputStylesheet library="themes" name="/reporte/javax.faces.resource/theme.css?ln=#{sesionController.sesionBean.themeSelected}"/>-->
+
+
+            <!--            <h:outputStylesheet library="css" name="bootstrap-theme.min.css"/>
+                        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+                        <h:outputScript library="js" name="bootstrap.min.js"/>-->
+
+            <h:outputStylesheet library="css" name="default.css"/>
+            <h:outputStylesheet library="css" name="cssLayout.css"/>            
+            <!--<h:outputStylesheet library="css" name="css.css"  />-->
+            <h:outputScript library="js" name="calendar_es.js"/>
+
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+
+
+
+                <div class="bs-example">
+                    <nav role="navigation" class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <p:commandLink styleClass="navbar-brand" actionListener="#{sesionController.redireccionHome()}" ajax="false" >
+                                <span style="color: #0088CC; font-size: 18px" class="glyphicon glyphicon-home"></span>
+                                <span style="color: #0088CC; font-size: 14px; font-weight: bold"> Home</span>    
+                            </p:commandLink>      
+
+                            <!--                           <a class="navbar-brand" href="" style="text-decoration: none">
+                                                            <span style="color: #0088CC"> Innovaciones.ec</span>
+                                                            <span style="color: #0088CC" class="glyphicon glyphicon-registration-mark small"></span>
+                                                        </a>-->
+                        </div>
+
+                        <div id="navbarCollapse" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav">
+
+                                <li class="dropdown active">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-cog"></span> Administración <b class="caret"></b></a>
+                                    <ul role="menu" class="dropdown-menu">
+
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/configuraciones/configuracion.jsf')}" >
+                                                <span class="glyphicon glyphicon-briefcase"></span>
+                                                Configuración de Empresa
+                                            </p:commandLink>                                        
+                                        </li>
+
+                                        <li class="divider"></li>
+
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/asignacion-reparaciones/asignacion-reparaciones.jsf')}" >
+                                                <span class="glyphicon glyphicon-copy"></span>
+                                                Asignación de Reparaciones                                           
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/usuarios/usuarios.jsf')}" >
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Usuarios                                            
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-hdd"></span> Catálogos <b class="caret"></b></a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        
+                                         <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/categorias/categorias.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Categorías                                            
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/clientes/clientes.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Clientes                                            
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/marcas/marcas.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Marcas                                            
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/modelos/modelos.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Modelos
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/productos/productos.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Productos
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/producto-clientes/producto-clientes.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Productos-Clientes
+                                            </p:commandLink>                                        
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/repuestos/repuestos.jsf')}">
+                                                <span class="glyphicon glyphicon-stop small"></span>
+                                                Repuestos
+                                            </p:commandLink>                                        
+                                        </li>
+
+                                        <li class="divider"></li>
+
+
+                                    </ul>
+                                </li>
+
+
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Reportes <b class="caret"></b></a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li>
+                                            <p:commandLink actionListener="#{sesionController.redirectToUrl('/paginas/consultas.jsf')}">
+                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                                Reportes
+                                            </p:commandLink>      
+                                        </li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <p:commandLink id="cmlNotificacion" styleClass="comand-link" onclick="return false;">
+                                        <span style="margin-top: 15px; font-size: 25px !important; position: absolute; color: #000000" class="glyphicon glyphicon-bell"></span>                                        
+                                        <span style="margin-top: -10px;  margin-left: 13px; background: #4cae4c !important; position: absolute;" class="badge">#{notificacionController.notificacionBean.contadorNotificacionReportes}</span>
+                                    </p:commandLink>
+                                </li>
+
+
+
+                                <!--                                <li>
+                                                                    <a href="http://www.innovaciones.ec" target="_blank" style="text-decoration: none">                                        
+                                                                        <span style="margin-left: 30px;" class="glyphicon glyphicon-globe"></span>
+                                                                        <span> web</span>
+                                                                    </a>
+                                                                </li>-->
+
+                            </ul>
+
+
+
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <p:commandLink  id="btnPerfil" style="color: #000000; font-weight: bold" onclick="return false;">                                    
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        #{sesionController.sesionBean.usuarios.nombre}  
+                                        <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                    </p:commandLink>
+                                </li>
+
+                                <li>
+                                    <p:commandLink style="color: #0088CC; font-weight: bold" actionListener="#{loginController.doLogout}" ajax="false">
+                                        Logout  <span class="glyphicon glyphicon-log-out"></span>
+                                    </p:commandLink>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+
+                <div id="top">
+                    <ui:insert name="top"></ui:insert>
+
+                    <p:tooltip for="cmlNotificacion" value="Notificaciones Reportes" />
+
+                    <p:overlayPanel id="notificacionPanel" for="cmlNotificacion" hideEffect="fade" dynamic="true"
+                                    showCloseIcon="true" style="width: 50%">
+                        <p:panelGrid columns="2">
+                            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+
+                                <h:outputText style="font-weight: bold; " value="Notificaciones Asignaciones y Reportes"/>
+                                <p:separator/>
+                                <div class="ui-fluid">
+
+                                    <p:dataTable id="tblNotificacionReporte" widgetVar="wtblNotificacionReporte" var="notificacion" 
+                                                 value="#{notificacionController.notificacionBean.listNotificaciones}"
+                                                 reflow="true" rowKey="#{notificacion.count}" 
+                                                 selectionMode="single" selection="#{notificacionController.notificacionBean.notificacionSelected}"                                                
+                                                 scrollRows="5" scrollable="true" scrollHeight="140"                                                 
+                                                 emptyMessage="No se encontró registros">
+
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <h:outputText value="Buscar :" />
+                                                <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar"
+                                                             onkeyup="PF('wtblNotificacionReporte').filter()"/>                                        
+                                            </p:outputPanel>
+                                        </f:facet>
+
+                                        <p:column headerText="#" width="50"
+                                                  sortBy="#{notificacion.count}">
+                                            <h:outputText value="#{notificacion.count}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Notificación" filterBy="#{notificacion.tipoNotificacion}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.tipoNotificacion}">                                    
+                                            <h:outputText value="#{notificacion.tipoNotificacion}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Subtipo" filterBy="#{notificacion.tipoReporte}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.tipoNotificacion}">                                    
+                                            <h:outputText value="#{notificacion.tipoReporte}"/>
+                                        </p:column>
+
+                                        <p:column headerText="F. Inicio" width="100" filterBy="#{notificacion.fechaInicio}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.fechaInicio}">
+                                            <h:outputText value="#{notificacion.fechaInicio}"/>
+                                        </p:column>
+
+                                        <p:column headerText="H. Inicio" width="100"  filterBy="#{notificacion.horaInicio}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.horaInicio}">
+                                            <h:outputText value="#{notificacion.horaInicio}"/>
+                                        </p:column>
+
+
+                                        <p:column headerText="Tecnico" filterBy="#{notificacion.tecnico}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.tecnico}">
+                                            <h:outputText value="#{notificacion.tecnico}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Cliente" filterBy="#{notificacion.cliente}" filterMatchMode="contains"
+                                                  sortBy="#{notificacion.cliente}">
+                                            <h:outputText value="#{notificacion.cliente}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Prioridad" width="100"
+                                                  sortBy="#{notificacion.prioridad}">
+                                            <span style="font-size: 85% !important;" class="#{sesionController.getClassByPrioridad(notificacion.prioridad)}">#{sesionController.getNamePrioridad(notificacion.prioridad)}</span>
+                                        </p:column>
+
+                                        <p:column width="40">
+                                            <div class="ui-fluid">
+                                                <p:commandButton id="btnVerNotificacion" icon="ui-icon-search"                                                        
+                                                                 action="#{notificacionController.redireccionarToSeleccionado(notificacion)}"/>
+                                                <p:tooltip for="btnVerNotificacion" value="Ver reporte"/>
+                                            </div>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:overlayPanel>
+
+
+                    <p:overlayPanel id="perfilPanel" for="btnPerfil" hideEffect="fade" dynamic="true"
+                                    showCloseIcon="true">
+
+                        <div class="ui-fluid">
+
+
+                            <p:panelGrid columns="2">
+                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+
+                                    <p:graphicImage id="imgEnterprise" height="80" width="80"
+                                                    value="#{sesionController.sesionBean.imageUsuario}"/>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel style="font-weight: bold;" value="CI/DNI:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.dni}" />
+                                    <p:outputLabel style="font-weight: bold;" value="Nombre:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.nombre}" />
+                                    <p:outputLabel style="font-weight: bold;" value="Apellido:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.apellido}" />
+                                    <p:outputLabel style="font-weight: bold;" value="Código:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.codigo}" />
+                                    <p:outputLabel style="font-weight: bold;" value="Teléfono:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.telefono}" />
+                                    <p:outputLabel style="font-weight: bold;" value="E-mail:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.mail}" />
+                                    <p:outputLabel style="font-weight: bold;" value="Dirección:"/>
+                                    <p:outputLabel value="#{sesionController.sesionBean.usuarios.direccion}" />                                     
+
+                                    <p:outputLabel value="Theme:"/>                                
+                                    <p:themeSwitcher style="font-weight: bold; width:165px" value="#{sesionController.sesionBean.themeSelected}" id="basic">                                        
+                                        <f:selectItems value="#{sesionController.sesionBean.themes}" var="theme" itemLabel="#{theme}" itemValue="#{theme}"/>
+                                        <p:ajax event="change" listener="#{sesionController.verificarTheme()}"/>
+                                    </p:themeSwitcher>                                
+                                </p:panelGrid>                                   
+
+                            </p:panelGrid>
+                        </div>
+                    </p:overlayPanel>
+
+                </div>
+            </h:form>
+
+        </h:body>
+    </f:view>
+
+</html>

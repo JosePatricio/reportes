@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form" prependId="false">
+
+            <p:growl id="msg" autoUpdate="true" showSummary="true" showDetail="true"/>
+
+            <!--            <div align="center">
+                            <h2>Menú Rápido</h2>
+                        </div>-->
+
+            <br/>
+            <br/>
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-xs-12" style="text-align: center">
+
+                        <p:commandLink styleClass="non-decoration btn btn-success" style="width: 80%; text-decoration: none;"
+                                       action="#{sesionController.redirect('instalacion-nueva','NUEVA')}">
+
+                            <i class="fa fa-file-text fa-5x"/>
+                            <br/>
+                            <br/>
+                            <span style="font-size: medium; font-weight: bold">Instalación Nueva</span>
+                        </p:commandLink>
+
+                        <br/>
+                        <br/>
+                    </div>                   
+                    <div class="col-xs-12" style="text-align: center">
+                        <br/>
+                        <br/>
+                    </div>
+
+                    <div class="col-xs-12" style="text-align: center">
+                        <p:commandLink styleClass="non-decoration btn btn-warning" style="width: 80%; text-decoration: none;"
+                                       action="#{sesionController.redirect('instalacion-temporal','TEMPORAL')}">
+                            <i class="fa fa-file-text fa-5x"/>
+                            <br/>
+                            <br/>
+                            <span style="font-size: medium; font-weight: bold">Instalación Temporal</span>
+                        </p:commandLink>
+
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+
+                <div class="col-xs-12"><br/></div>
+
+                <div class="col-xs-12" style="text-align: center">
+
+                    <p:commandLink styleClass="non-decoration btn btn-primary" style="width: 80%; text-decoration: none;"
+                                   action="#{sesionController.redirect('instalacion-administracion', 'ADMINISTRACION')}">
+                        <i class="fa fa-gear fa-5x"/>
+                        <br/>
+                        <br/>
+                        <span style="font-size: medium; font-weight: bold">Administración de Instalaciones</span>
+                    </p:commandLink>
+
+                    <br/>
+                    <br/>
+                </div>      
+
+            </div>
+
+
+
+        </h:form>
+
+    </ui:define>
+
+
+</ui:composition>

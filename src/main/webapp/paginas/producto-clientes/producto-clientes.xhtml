@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="top">
+
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <div class="modal fade" id="dlgProductoClientes" tabindex="-1" role="dialog"
+             aria-labelledby="dlgProductoClientesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <!--<h:form id="formEditMarcas" prependId="false">-->
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true" >x</span>
+                        </button>
+                        <h4 class="modal-title" id="dlgProductoClientesLabel">
+                            Productos-Clientes
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p:outputPanel id="group">
+                            <ui:include src="edit.xhtml"/>  
+                        </p:outputPanel>
+                    </div>
+
+                    <!--                        <div class="modal-footer" >
+                <p:commandButton update="tblRepuestos" value="Guardar" actionListener="#{repuestoController.guardar()}" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-closethick" actionListener="#{repuestoController.cerrarDialog()}" immediate="true"/>
+           
+                                            </div>-->
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--        <p:dialog id="dialogProductoClientes" appendTo="@(body)" closeOnEscape="true"
+                          position="top" responsive="true" width="80%"
+                          style="overflow-y: scroll; max-height:85%; margin-bottom:50px;"
+                          header="Productos-Clientes" widgetVar="dlgProductoClientes" modal="true">
+                    <ui:include src="edit.xhtml"/>   
+        
+                </p:dialog>   -->
+
+        <h:form id="formProductoCliente" prependId="false">
+            <p:growl autoUpdate="true" showDetail="true"/>
+
+            <div align="center">
+                <h2>Administración de Producto-Clientes</h2>
+            </div>
+
+            <p:separator style="width: 100%"/>    <br/> 
+            <p:commandButton value="Nuevo" icon="fa fa-fw fa-file-o" actionListener="#{productoClienteController.abrirDialogProductoCliente(null)}"/>
+            <br/> 
+
+
+            <p:dataTable id="tblProductoClientes" widgetVar="wtblProductoClientes" var="productoCliente"  value="#{productoClienteController.productoClienteBean.listProductoClientes}" 
+                         rows="10" reflow="true" rowKey="#{productoCliente.id}" 
+                         paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{productoClienteController.productoClienteBean.productoClienteSelected}"
+                         emptyMessage="No se encontró registros">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar: " />
+                        <p:inputText id="globalFilter" style="width:150px" placeholder="Ingresar..." onkeyup="PF('wtblProductoClientes').filter()"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="Ruc" sortBy="#{productoCliente.idCliente.ruc}" filterBy="#{productoCliente.idCliente.ruc}" 
+                          filterMatchMode="contains" width="110">
+                    <h:outputText value="#{productoCliente.idCliente.ruc}" />
+                </p:column>
+
+                <p:column headerText="Cliente" sortBy="#{productoCliente.idCliente.cliente}" filterBy="#{productoCliente.idCliente.cliente}" filterMatchMode="contains">
+                    <h:outputText value="#{productoCliente.idCliente.cliente}" />
+                </p:column>
+
+                <p:column headerText="Categoria" sortBy="#{productoCliente.idProducto.idCategoria.nombre}" filterBy="#{productoCliente.idProducto.idCategoria.nombre}" filterMatchMode="contains">
+                    <h:outputText value="#{productoCliente.idProducto.idCategoria.nombre}" />
+                </p:column>
+
+                <p:column headerText="Marca" sortBy="#{productoCliente.idProducto.idModelo.idMarca.marca}" filterBy="#{productoCliente.idProducto.idModelo.idMarca.marca}" filterMatchMode="contains">
+                    <h:outputText value="#{productoCliente.idProducto.idModelo.idMarca.marca}" />
+                </p:column>
+
+                <p:column headerText="Modelo" sortBy="#{productoCliente.idProducto.idModelo.modelo}" filterBy="#{productoCliente.idProducto.idModelo.modelo}" filterMatchMode="contains">
+                    <h:outputText value="#{productoCliente.idProducto.idModelo.modelo}" />
+                </p:column>
+
+                <p:column headerText="Serial" sortBy="#{productoCliente.serie}" filterBy="#{productoCliente.serie}" filterMatchMode="contains">
+                    <h:outputText value="#{productoCliente.serie}" />
+                </p:column>
+
+                <p:column headerText="F. Registro" sortBy="#{productoCliente.fecha}" filterBy="#{productoCliente.fecha}" 
+                          filterMatchMode="contains" width="100" style="text-align: center;">
+                    <h:outputText value="#{productoCliente.fecha}"  >
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Estado" sortBy="#{sesionController.getStatus(productoCliente.estado)}" width="100">
+                    <h:outputText value="#{sesionController.getStatus(productoCliente.estado)}" />
+                </p:column>
+
+                <p:column width="50" >
+                    <div class="ui-fluid">
+                        <p:commandButton id="idEditar" icon="fa fa-fw fa-pencil" title="Editar" 
+                                         action="#{productoClienteController.abrirDialogProductoCliente(productoCliente)}"/>
+                        <p:tooltip for="idEditar" value="Editar"/>
+                    </div>
+                </p:column>
+            </p:dataTable>
+
+
+        </h:form>
+
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
+
+</ui:composition>

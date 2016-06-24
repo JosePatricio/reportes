@@ -1,0 +1,26 @@
+/*** override primefaces style ***/
+.ui-message-info,.ui-message-error,.ui-message-warn,.ui-message-fatal {
+    border: 0;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+.ui-messages-error,.ui-message-error {
+    color: #A12A2A;
+    background-color: #fff;
+}
+
+.ui-message-error-icon {
+    height: 0;
+    width: 0;
+    background: none;
+    float: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.ui-state-error {
+    border-color: #A12A2A !important;
+    background-color: #F9E8E8 !important;
+}
