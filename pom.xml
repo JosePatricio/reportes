@@ -76,64 +76,7 @@
             <version>6.0</version>
         </dependency>
         
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>cupertino</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>redmond</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>casablanca</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>delta</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>start</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>afterwork</artifactId>
-            <version>1.0.10</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>aristo</artifactId>
-            <version>1.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        
+     
         
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -146,8 +89,7 @@
             <version>2.5</version>
             <type>jar</type>
         </dependency>
-      
-
+       
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -367,20 +309,7 @@
         
         <plugins>
             
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <version>1.1.7</version>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+         
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -436,7 +365,9 @@
     </build>
     
        
-       
+        <repositories>
+    
+    </repositories>
        
        
 </project>

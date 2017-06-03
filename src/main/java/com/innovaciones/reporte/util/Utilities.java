@@ -80,8 +80,8 @@ public class Utilities implements Serializable {
     private final static String SMTP_HOST = "smtp.live.com";
     private final static int SMTP_PORT = 587;
 
-    private final static String MAIL_USERNAME = "correoinnovaciones@outlook.com";
-    private final static String MAIL_PASSWORD = "contrase;a";
+    private final static String MAIL_USERNAME = "CORREO";
+    private final static String MAIL_PASSWORD = "CONTRASENA";
 
     private static String getFullPath(String reportPath) {
         return FacesContext.getCurrentInstance().getExternalContext().getRealPath(reportPath);
